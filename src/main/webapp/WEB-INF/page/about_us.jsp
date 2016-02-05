@@ -1,0 +1,254 @@
+<%@page import="com.web.core.common.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+  String path = request.getContextPath();
+  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+  request.setAttribute("domain", basePath);
+%>
+<!doctype html>
+
+<html lang="en">
+<head>
+
+  <%--<meta charset="utf-8">--%>
+  <title>About us</title>
+  <%--<meta name="description" content="About us is minimalist and simplicty information in two column and masonry portfolio logo our photography. Check and download free.">--%>
+  <%--<meta name="keywords" content="thomsoon, simplicity, theme, html5, about us">--%>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <%--<meta name="author" content="thomsoon.com">--%>
+  <link rel="icon" type="image/png" href="${domain}/img/icon.png" />
+
+<!--Style-->
+
+  <link rel="stylesheet" href="${domain}/css/reset.css">
+  <link rel="stylesheet" href="${domain}/css/style.css">
+  <link rel="stylesheet" href="${domain}/css/style-responsive.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  
+</head>
+
+<body>
+
+<!--Preloader-->
+
+<%--<div class="preloader" id="preloader">--%>
+    <%--<div class="item">--%>
+      <%--<div class="spinner">--%>
+      <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+<%--<div class="opacity-nav">--%>
+
+        <%--<div class="menu-index" id="buttons" style="z-index:999999">--%>
+        <%--<i class="fa  fa-close"></i>--%>
+        <%--</div>--%>
+
+    <%--<ul class="menu-fullscreen">--%>
+      <%--<li><a class="ajax-link" href="${domain}">Home</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}/products">Projects</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}/about_us">About us</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}/contact">Contact</a></li>--%>
+    <%--</ul>--%>
+
+<%--</div>--%>
+
+
+  <!--Header-->
+<header class="boxed" id="header-white">
+
+  <div class="header-margin">
+
+    <div class="logo"><a class="ajax-link" href="${domain}">HOME</a></div>
+
+    <ul class="header-nav">
+      <li><a href="${domain}/products">Products</a>
+        <%--<ul>--%>
+        <%--<li><a class="ajax-link" href="${domain}/projects">Projects</a></li>--%>
+        <%--<li><a class="ajax-link" href="single.html">Single project</a></li>--%>
+        <%--<li><a class="ajax-link" href="single-full.html">Single project fullscreen</a></li>--%>
+        <%--</ul>--%>
+
+      </li>
+
+      <li><a href="${domain}/about_us">About me</a></li>
+      <c:if test="${username==null}">
+        <li><a href="${domain}/login">Login</a></li>
+      </c:if>
+      <c:if test="${username!=null}">
+        <li><a href="${domain}">${username}</a></li>
+        <ul>
+          <li><a href="${domain}/logout">Logout</a></li>
+        </ul>
+      </c:if>
+    </ul>
+
+  </div>
+
+</header>
+
+  <div class="clear"></div>
+
+  <!--Content-->
+
+  <div class="content" id="ajax-content">
+
+
+        <div class="text-intro">
+
+          <h1>About us</h1>
+                    
+          <div class="one-column">
+            <p>Front-End Developer | UI/Web Designer | Video Producer</p>
+          
+          </div>
+
+
+          <div class="two-column">
+
+            <p>Hello, my name is Tomasz Mazurczak. I'm freelancer. I invite you to look at my work and thanks for liking the project.<br/><br/>
+            
+            Full corporate identity visual with various versions of the logo. The creative combination of letters of the company name: Bespoke Creative LTD. (B+C+L) gave the following effects work. We used soft nude shades colors which added prestige. Website done in HTML5 + CSS3 responsive version.
+            <br/><br/>
+            I encourage you to watch the presentation.
+            
+            </p>
+          
+          </div>          
+
+
+        </div>
+        
+        <div class="clear"></div>
+
+        <%--<div class="text-intro" id="site-type">--%>
+
+          <%--<h1>Logo design</h1>--%>
+          <%--<p>All project is clean and simplicity modern style.</p>--%>
+
+        <%--</div>--%>
+
+
+  <!--Portfolio grid-->
+
+  <%--<ul class="portfolio-grid">--%>
+
+    <%----%>
+    <%--<li class="grid-item" data-jkit="[show:delay=3000;speed=500;animation=fade]">--%>
+      <%--<img src="${domain}/img/logo/1.jpg">--%>
+        <%--<a class="ajax-link" href="${domain}/single.html">--%>
+          <%--<div class="grid-hover">--%>
+            <%--<h1>Single</h1>--%>
+            <%--<p>Branding</p>--%>
+          <%--</div>--%>
+        <%--</a>  --%>
+    <%--</li>--%>
+
+    <%--<li class="grid-item" data-jkit="[show:delay=3000;speed=500;animation=fade]">--%>
+      <%--<img src="${domain}/img/logo/2.jpg">--%>
+        <%--<a class="ajax-link" href="${domain}/single.html">--%>
+          <%--<div class="grid-hover">--%>
+            <%--<h1>Single</h1>--%>
+            <%--<p>Branding</p>--%>
+          <%--</div>--%>
+        <%--</a>      --%>
+    <%--</li>    --%>
+    <%----%>
+    <%--<li class="grid-item" data-jkit="[show:delay=3000;speed=500;animation=fade]">--%>
+      <%--<img src="${domain}/img/logo/3.jpg">--%>
+        <%--<a class="ajax-link" href="${domain}/single.html">--%>
+          <%--<div class="grid-hover">--%>
+            <%--<h1>Single</h1>--%>
+            <%--<p>Branding</p>--%>
+          <%--</div>--%>
+        <%--</a>      --%>
+    <%--</li>  --%>
+    <%----%>
+    <%--<li class="grid-item" data-jkit="[show:delay=3000;speed=500;animation=fade]">--%>
+      <%--<img src="${domain}/img/logo/4.jpg">--%>
+        <%--<a class="ajax-link" href="${domain}/single.html">--%>
+          <%--<div class="grid-hover">--%>
+            <%--<h1>Single</h1>--%>
+            <%--<p>Branding</p>--%>
+          <%--</div>--%>
+        <%--</a>      --%>
+    <%--</li>    --%>
+
+    <%--<li class="grid-item" data-jkit="[show:delay=3000;speed=500;animation=fade]">--%>
+      <%--<img src="${domain}/img/logo/5.jpg">--%>
+        <%--<a class="ajax-link" href="${domain}/single.html">--%>
+          <%--<div class="grid-hover">--%>
+            <%--<h1>Single</h1>--%>
+            <%--<p>Branding</p>--%>
+          <%--</div>--%>
+        <%--</a>      --%>
+    <%--</li>    --%>
+
+    <%--<li class="grid-item" data-jkit="[show:delay=3000;speed=500;animation=fade]">--%>
+      <%--<img src="${domain}/img/logo/6.jpg">--%>
+        <%--<a class="ajax-link" href="${domain}/single.html">--%>
+          <%--<div class="grid-hover">--%>
+            <%--<h1>Single</h1>--%>
+            <%--<p>Branding</p>--%>
+          <%--</div>--%>
+        <%--</a>      --%>
+    <%--</li>  --%>
+
+  <%--</ul>--%>
+
+  <%--</div>--%>
+
+
+
+  <!--Home Sidebar-->
+
+<div id="ajax-sidebar"></div>
+
+
+  <!--Footer-->
+
+  <footer id="ajax-footer">
+
+    <div class="footer-margin">
+      <%--<div class="social-footer">--%>
+        <%--<a href="https://www.facebook.com/thomsooncom"><i class="fa fa-facebook"></i></a>--%>
+        <%--<a href="https://www.behance.net/TomaszMazurczak"><i class="fa fa-behance"></i></a>--%>
+      <%----%>
+      <%--</div>     --%>
+      <%--<div class="copyright">© Copyright 2015 Thomsoon.com. All Rights Reserved.</div>--%>
+    
+    </div>
+
+
+  </footer>
+
+
+<!--Scripts-->
+
+  <script src="${domain}/js/jquery.min.js"></script>
+	<script src="${domain}/js/jquery.easing.min.js"></script>
+	<script src="${domain}/js/modernizr.custom.42534.js" type="text/javascript"></script>
+  <script src="${domain}/js/jquery.waitforimages.js" type="text/javascript"></script>
+  <script src="${domain}/js/typed.js" type="text/javascript"></script>
+  <script src="${domain}/js/masonry.pkgd.min.js" type="text/javascript"></script>
+  <script src="${domain}/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="${domain}/js/jquery.jkit.1.2.16.min.js"></script>
+ 
+  <script src="${domain}/js/script.js" type="text/javascript"></script>
+  
+	<script>
+    $('#button, #buttons').on('click', function() {
+      $( ".opacity-nav" ).fadeToggle( "slow", "linear" );
+    // Animation complete.
+    });
+  </script>
+
+
+</body>
+</html>

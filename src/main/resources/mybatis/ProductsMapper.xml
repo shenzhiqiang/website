@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.web.core.dao.IProductsTableDao">
+
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from ProductsTable
+    </select>
+
+    <select id="getSearchRowCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from ProductsTable
+        WHERE prod_name REGEXP ".*"#{searchInfo}".*"
+    </select>
+
+    <select id="getAllProd" resultType="com.web.core.entity.ProductsTable">
+    select * from ProductsTable
+    order by update_date desc, id desc
+    </select>
+
+    <select id="getPageProd" resultType="com.web.core.entity.ProductsTable" parameterType="map">
+        select * from ProductsTable
+        order by update_date desc, id desc
+        limit ${offset},${size}
+    </select>
+
+    <select id="getTopProd" resultType="com.web.core.entity.ProductsTable" parameterType="int">
+        select * from ProductsTable
+        WHERE is_top > 0
+        order by update_date desc, id desc
+        limit 0, #{num}
+    </select>
+
+    <select id="selectById" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.Integer">
+        select * from ProductsTable
+        WHERE id = #{id}
+    </select>
+
+    <select id="allSearchResult" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.String">
+        select * from ProductsTable
+        WHERE prod_name REGEXP ".*"#{searchInfo}".*"
+    </select>
+
+    <select id="searchResult" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.String">
+        select * from ProductsTable
+        WHERE prod_name REGEXP ".*"#{searchInfo}".*"
+        order by update_date desc, id desc
+        limit ${offset},${size}
+    </select>
+
+    <delete id="delOneById" parameterType="java.lang.Integer">
+        DELETE FROM ProductsTable
+        WHERE id = #{id}
+    </delete>
+
+    <!--<select id="selectByParams" resultType="com.jikexueyuan.demo.entity.TableIp" parameterType="map">-->
+        <!--select * from table_ip-->
+        <!--order by findTime desc-->
+        <!--limit ${offset}, ${size}-->
+    <!--</select>-->
+
+    <!--<select id="fetchByParams" resultType="com.jikexueyuan.demo.entity.TableIp" parameterType="map">-->
+        <!--select * from table_ip-->
+        <!--where 1=1-->
+        <!--<if test="country != null and country != ''">-->
+            <!--and country = '${country}'-->
+        <!--</if>-->
+        <!--<if test="isp != null and isp != ''">-->
+            <!--and isp = '${isp}'-->
+        <!--</if>-->
+        <!--limit ${size}-->
+    <!--</select>-->
+
+</mapper>

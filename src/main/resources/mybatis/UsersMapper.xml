@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.web.core.dao.IUsersTableDao">
+
+    <select id="selectByName" resultType="com.web.core.entity.UsersTable" parameterType="java.lang.String">
+        SELECT * FROM UsersTable
+        WHERE user_name = #{name}
+    </select>
+
+</mapper>
