@@ -62,8 +62,8 @@ public class IndexController {
         ModelAndView ret = new ModelAndView();
 
         if (adminService.checkUserLogin(username, passwd)) {
-            ret.setViewName("login_success");
-            ret.addObject("username", username);
+            ret.setViewName("put_success");
+            ret.addObject("showtext", username);
             session.setAttribute("username", username);
             return ret;
         } else {

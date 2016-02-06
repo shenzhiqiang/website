@@ -18,14 +18,14 @@
   <%--<meta name="keywords" content="thomsoon, simplicity, theme, html5, contact, form">--%>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <%--<meta name="author" content="thomsoon.com">--%>
-    <link rel="icon" type="image/png" href="${domain}/img/icon.png" />
+  <link rel="icon" type="image/png" href="${domain}/img/icon.png" />
 
-    <!--Style-->
+<!--Style-->
 
-    <link rel="stylesheet" href="${domain}/css/reset.css">
-    <link rel="stylesheet" href="${domain}/css/style.css">
-    <link rel="stylesheet" href="${domain}/css/style-responsive.css">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="${domain}/css/reset.css">
+  <link rel="stylesheet" href="${domain}/css/style.css">
+  <link rel="stylesheet" href="${domain}/css/style-responsive.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -101,7 +101,7 @@
 
         <div class="text-intro">
 
-          <h1>Login</h1>
+          <h1>Change Password</h1>
           <c:if test="${error!=null}">
             <p>${error}</p>
           </c:if>
@@ -126,10 +126,11 @@
 
           <%--</form>--%>
           <div class="contact-one">
-          <form action="${domain}/login" method="post">
-            <label>Username: </label><input type="text" name="username"/><br/>
-            <label>Password: </label><input type="password" name="passwd"/><br/>
-            <input type="submit" value="Login"/>
+          <form action="${domain}/admin/passwd" method="post">
+            <label>Old Password: </label><input type="password" name="oldpassword"/><br/>
+            <label>New Password: </label><input type="password" name="newpassword"/><br/>
+            <label>New Password: </label><input type="password" name="newpassword2"/><br/>
+            <input type="submit" value="PUT"/>
           </form>
           </div>
 
@@ -169,17 +170,17 @@
 <!--Scripts-->
 
   <script src="${domain}/js/jquery.min.js"></script>
-  <script src="${domain}/js/jquery.easing.min.js"></script>
-  <script src="${domain}/js/modernizr.custom.42534.js" type="text/javascript"></script>
+	<script src="${domain}/js/jquery.easing.min.js"></script>
+	<script src="${domain}/js/modernizr.custom.42534.js" type="text/javascript"></script>
   <script src="${domain}/js/jquery.waitforimages.js" type="text/javascript"></script>
   <script src="${domain}/js/typed.js" type="text/javascript"></script>
   <script src="${domain}/js/masonry.pkgd.min.js" type="text/javascript"></script>
   <script src="${domain}/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="${domain}/js/jquery.jkit.1.2.16.min.js"></script>
-
+ 
   <script src="${domain}/js/script.js" type="text/javascript"></script>
-
-  <script>
+  
+	<script>
     $('#button, #buttons').on('click', function() {
       $( ".opacity-nav" ).fadeToggle( "slow", "linear" );
     // Animation complete.

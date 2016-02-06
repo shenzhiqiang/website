@@ -13,18 +13,18 @@
 <head>
 
   <meta charset="utf-8">
-  <title>Contact - THOMSOON - Portfolio with grid and modern simplicity style - buy now!</title>
-  <meta name="description" content="Contact page with contact form and simplicty information with e-mail and address. Contact form with check input and textarea. ">
-  <meta name="keywords" content="thomsoon, simplicity, theme, html5, contact, form">
+  <title>SUCCESS</title>
+  <%--<meta name="description" content="Contact page with contact form and simplicty information with e-mail and address. Contact form with check input and textarea. ">--%>
+  <%--<meta name="keywords" content="thomsoon, simplicity, theme, html5, contact, form">--%>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="author" content="thomsoon.com">
-  <link rel="icon" type="image/png" href="img/icon.png" />
+  <%--<meta name="author" content="thomsoon.com">--%>
+  <link rel="icon" type="image/png" href="${domain}/img/icon.png" />
 
-<!--Style-->
+  <!--Style-->
 
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/style-responsive.css">  
+  <link rel="stylesheet" href="${domain}/css/reset.css">
+  <link rel="stylesheet" href="${domain}/css/style.css">
+  <link rel="stylesheet" href="${domain}/css/style-responsive.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
   <!--[if lt IE 9]>
@@ -101,7 +101,7 @@
 
         <div class="text-intro">
 
-          <h1>${username}</h1>
+          <h1>${showtext}</h1>
           <p>plz click <a href="${domain}">here</a></p>
           
           
@@ -140,18 +140,18 @@
 
 <!--Scripts-->
 
-  <script src="js/jquery.min.js"></script>
-	<script src="js/jquery.easing.min.js"></script>
-	<script src="js/modernizr.custom.42534.js" type="text/javascript"></script>
-  <script src="js/jquery.waitforimages.js" type="text/javascript"></script>
-  <script src="js/typed.js" type="text/javascript"></script>
-  <script src="js/masonry.pkgd.min.js" type="text/javascript"></script>  
-  <script src="js/imagesloaded.pkgd.min.js" type="text/javascript"></script>    
-  <script src="js/jquery.jkit.1.2.16.min.js"></script>
- 
-  <script src="js/script.js" type="text/javascript"></script>
-  
-	<script>
+  <script src="${domain}/js/jquery.min.js"></script>
+  <script src="${domain}/js/jquery.easing.min.js"></script>
+  <script src="${domain}/js/modernizr.custom.42534.js" type="text/javascript"></script>
+  <script src="${domain}/js/jquery.waitforimages.js" type="text/javascript"></script>
+  <script src="${domain}/js/typed.js" type="text/javascript"></script>
+  <script src="${domain}/js/masonry.pkgd.min.js" type="text/javascript"></script>
+  <script src="${domain}/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="${domain}/js/jquery.jkit.1.2.16.min.js"></script>
+
+  <script src="${domain}/js/script.js" type="text/javascript"></script>
+
+  <script>
     $('#button, #buttons').on('click', function() {
       $( ".opacity-nav" ).fadeToggle( "slow", "linear" );
     // Animation complete.

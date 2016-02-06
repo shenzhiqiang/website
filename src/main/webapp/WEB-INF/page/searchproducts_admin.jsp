@@ -1,4 +1,5 @@
 <%@page import="com.web.core.common.*"%>
+<%@ page import="com.web.core.common.ProductsParam" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -13,19 +14,20 @@
 <head>
 
   <%--<meta charset="utf-8">--%>
-  <title>Login</title>
-  <%--<meta name="description" content="Contact page with contact form and simplicty information with e-mail and address. Contact form with check input and textarea. ">--%>
-  <%--<meta name="keywords" content="thomsoon, simplicity, theme, html5, contact, form">--%>
+  <title>Products</title>
+  <%--<meta name="description" content="THOMSOON - Portfolio Masonry boxed layout. Clean and minimalist portfolio and photography.">--%>
+  <%--<meta name="keywords" content="thomsoon, simplicity, theme, html5, download, masonry, showroom, creative ">--%>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <%--<meta name="author" content="thomsoon.com">--%>
-    <link rel="icon" type="image/png" href="${domain}/img/icon.png" />
+  <link rel="icon" type="image/png" href="${domain}/img/icon.png" />
 
-    <!--Style-->
+  <!--Style-->
 
-    <link rel="stylesheet" href="${domain}/css/reset.css">
-    <link rel="stylesheet" href="${domain}/css/style.css">
-    <link rel="stylesheet" href="${domain}/css/style-responsive.css">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="${domain}/css/reset.css">
+  <link rel="stylesheet" href="${domain}/css/style.css">
+  <link rel="stylesheet" href="${domain}/css/style-responsive.css">
+  
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -51,10 +53,10 @@
         <%--</div>--%>
 
     <%--<ul class="menu-fullscreen">--%>
-      <%--<li><a class="ajax-link" href="index.html">Home</a></li>--%>
-      <%--<li><a class="ajax-link" href="projects.html">Projects</a></li>--%>
-      <%--<li><a class="ajax-link" href="about-us.html">About us</a></li>--%>
-      <%--<li><a class="ajax-link" href="contact.html">Contact</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}">Home</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}/products">Projects</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}/about_us">About us</a></li>--%>
+      <%--<li><a class="ajax-link" href="${domain}/contact">Contact</a></li>--%>
     <%--</ul>--%>
 
 <%--</div>--%>
@@ -97,47 +99,75 @@
 
   <!--Content-->
 
-  <div class="content"  id="ajax-content">
+  <div class="content" id="ajax-content">
+
 
         <div class="text-intro">
 
-          <h1>Login</h1>
-          <c:if test="${error!=null}">
-            <p>${error}</p>
-          </c:if>
+          <h1>${productsParam.title}</h1>
+          <%--<p>${productsParam.subTitle}</p>--%>
+          <form method="get" action="${domain}/admin/search">
+            <div class="contact-two">
+              <p>
+                <input name="searchinfo" id="searchinfo" data-jkit="[validate:required=true;min=1;error=Please write your search info]">
+              <%--</p>--%>
+            <%--</div>--%>
 
-          <%--<form method="post" action="${domin}/login" data-jkit="[form:validateonly=true]">--%>
-          <%----%>
-          <%--<div class="contact-one">--%>
-            <%--<p>--%>
-              <%--<label for="username">Username:</label><br />--%>
-              <%--<input name="username" id="username" data-jkit="[validate:required=true;min=3;max=10;error=Please enter your username (3-10 characters)]">--%>
-            <%--</p>--%>
-          <%--</div>--%>
-
-          <%--<div class="contact-two">--%>
-            <%--<p>--%>
-              <%--<label for="passwd">Password:</label><br />--%>
-              <%--<input type="password" name="passwd" id="passwd" data-jkit="[validate:required=true;error=Please write your password]">--%>
-              <%--<input class="button-submit" type="submit" value="SUBMIT" />--%>
-            <%--</p>--%>
-          <%--</div>  --%>
-          <%----%>
-
-          <%--</form>--%>
-          <div class="contact-one">
-          <form action="${domain}/login" method="post">
-            <label>Username: </label><input type="text" name="username"/><br/>
-            <label>Password: </label><input type="password" name="passwd"/><br/>
-            <input type="submit" value="Login"/>
+            <%--<div class="contact-three">--%>
+              <%--<p>--%>
+                <input class="button-submit" type="submit" value="SEARCH" />
+              </p>
+            </div>
           </form>
-          </div>
 
         </div>
-        
-	<br/><br/><br/><br/><br/><br/><br/><br/>      
-  </div>
 
+
+  <!--Portfolio grid-->
+
+  <ul class="portfolio-grid">
+
+    <c:forEach items="${productsParam.prod_list}" var="item">
+      <li class="grid-item" data-jkit="[show:delay=500;speed=500;animation=fade]">
+        <c:if test="${item.extra_info!='outer'}">
+          <img class="img-item-fix" src="${domain}${item.cover_image_url}">
+        </c:if>
+        <c:if test="${item.extra_info=='outer'}">
+          <img class="img-item-fix" src="${item.cover_image_url}">
+        </c:if>
+          <%--<a class="ajax-link" href="${domain}/product/${item.id}">--%>
+            <%--<div class="grid-hover">--%>
+              <%--<h1>${item.prod_name}</h1>--%>
+              <%--<p>${item.prod_introduction}</p>--%>
+            <%--</div>--%>
+          <%--</a>--%>
+            <h1>${item.prod_name}</h1>
+            <p>${item.prod_introduction}</p>
+            <a href="${domain}/admin/update/${item.id}">Edit</a>
+            <a href="${domain}/admin/delete/${item.id}">Del</a>
+      </li>
+    </c:forEach>
+
+  </ul>
+
+    <div class="text-intro">
+      <h1>Page:
+      <%
+
+        ProductsParam pageParam = (ProductsParam)request.getAttribute("productsParam");
+        int currPage = pageParam.getCurrPage();
+        int totalPage = pageParam.getTotalPage();
+        for(int i = 1; i <= totalPage; i ++){
+          if(i == currPage){
+            %><a><%=currPage %>  </a><%
+          }else{
+            %><a href="${domain}/admin/search/<%=i %>?searchinfo=<%=pageParam.getSubTitle() %>"><%=i %>  </a><%
+          }
+        }
+    %>
+      </h1>
+    </div>
+  </div>
 
 
 
@@ -146,8 +176,8 @@
 <div id="ajax-sidebar"></div>
 
 
-
   <!--Footer-->
+
   <footer>
 
     <div class="footer-margin">
@@ -166,6 +196,7 @@
   </footer>
 
 
+
 <!--Scripts-->
 
   <script src="${domain}/js/jquery.min.js"></script>
@@ -178,8 +209,8 @@
   <script src="${domain}/js/jquery.jkit.1.2.16.min.js"></script>
 
   <script src="${domain}/js/script.js" type="text/javascript"></script>
-
-  <script>
+  
+	<script>
     $('#button, #buttons').on('click', function() {
       $( ".opacity-nav" ).fadeToggle( "slow", "linear" );
     // Animation complete.

@@ -8,4 +8,10 @@
         WHERE user_name = #{name}
     </select>
 
+    <update id="updatePasswd" parameterType="map">
+        UPDATE UsersTable
+        SET passwd = #{passwd}
+        WHERE user_name = #{name}
+    </update>
+
 </mapper>

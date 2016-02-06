@@ -1,6 +1,10 @@
 package com.web.core.service;
 
 import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.UsersTable;
@@ -51,6 +55,16 @@ public class AdminService {
             return false;
         if (!StrToMd5L32(passwd).toLowerCase().equals(user.getPasswd().toLowerCase()))
             return false;
+
+        return true;
+    }
+
+    public boolean changePasswd(String username, String passwd) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name", username);
+        params.put("passwd", StrToMd5L32(passwd).toLowerCase());
+
+        iUsersTableDao.updatePasswd(params);
 
         return true;
     }
