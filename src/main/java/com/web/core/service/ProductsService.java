@@ -29,7 +29,7 @@ public class ProductsService {
             return null;
         }
 
-        if (prod.getImage_urls() != null) {
+        if (prod.getImage_urls() != null && !prod.getImage_urls().equals("")) {
             List<ImageType> imgList = new ArrayList<ImageType>();
 
             String[] img_urls = prod.getImage_urls().split(";");

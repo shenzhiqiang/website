@@ -69,6 +69,10 @@ public class AdminService {
         return true;
     }
 
+    public int addProd(Map<String, Object> params) {
+        return iProductsTableDao.addProdSimple(params);
+    }
+
     public int delOneProd(Integer id) {
         return iProductsTableDao.delOneById(id);
     }

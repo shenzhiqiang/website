@@ -47,6 +47,11 @@
         limit ${offset},${size}
     </select>
 
+    <insert id="addProdSimple" parameterType="map">
+        INSERT INTO ProductsTable (prod_name, prod_introduction, image_urls, cover_image_url)
+        VALUES (#{prod_name}, #{prod_introduction}, #{image_urls}, #{cover_image_url});
+    </insert>
+
     <delete id="delOneById" parameterType="java.lang.Integer">
         DELETE FROM ProductsTable
         WHERE id = #{id}

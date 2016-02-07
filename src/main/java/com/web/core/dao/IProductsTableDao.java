@@ -22,6 +22,7 @@ public interface IProductsTableDao {
     List<ProductsTable> allSearchResult(String searchInfo);
     List<ProductsTable> searchResult(Map<String, Object> searchInfo);
 
+    int addProdSimple(Map<String, Object> params);
     int delOneById(Integer id);
 
 }
