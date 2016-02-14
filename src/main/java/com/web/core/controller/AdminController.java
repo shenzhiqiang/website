@@ -190,7 +190,9 @@ public class AdminController {
 
         params.put("image_urls", image_urls);
         params.put("cover_image_url", cover_image_url);
-        
+
+        adminService.addProd(params);
+
         ret.setViewName("put_success");
         return ret;
     }
