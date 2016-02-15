@@ -28,10 +28,16 @@ public class AdminService {
     @Resource
     IUsersTableDao iUsersTableDao;
 
-//    public UsersTable getUserByName(String name) {
-//        UsersTable user = iUsersTableDao.selectByName(name);
-//        return user;
-//    }
+    public UsersTable getUserByName(String name) {
+        UsersTable user = null;
+        try {
+            user = iUsersTableDao.selectByName(name);
+        } catch (Exception e) {
+            logger.error("Error: getUserByName; iUsersTableDao.selectByName()", e);
+            return null;
+        }
+        return user;
+    }
 
 
     public boolean checkUserLogin(String name, String passwd) {
@@ -68,8 +74,7 @@ public class AdminService {
     public int addProd(Map<String, Object> params) {
         int ret = 0;
         try {
-            iProductsTableDao.addProdSimple(params);
-            ret = 1;
+            ret = iProductsTableDao.addProdSimple(params);
         } catch (Exception e) {
             logger.error("Error: addProd; iProductsTableDao.addProdSimple()", e);
         }
@@ -79,8 +84,7 @@ public class AdminService {
     public int delOneProd(Integer id) {
         int ret = 0;
         try {
-            iProductsTableDao.delOneById(id);
-            ret = 1;
+            ret = iProductsTableDao.delOneById(id);
         } catch (Exception e) {
             logger.error("Error: delOneProd; iProductsTableDao.delOneById()", e);
         }

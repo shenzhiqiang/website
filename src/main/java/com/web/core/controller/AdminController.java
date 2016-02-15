@@ -40,6 +40,9 @@ public class AdminController {
     public String deleteProduct(@PathVariable("id") Integer id) {
 
         int status = adminService.delOneProd(id);
+        if (status < 1)
+            logger.error("Admin Delete fail. ID: " + id + ", status: " + status);
+        logger.info("Admin Delete prod. ID: " + id + ", status: " + status);
         return "redirect:/admin/products";
     }
 
@@ -183,7 +186,7 @@ public class AdminController {
                         File f = new File(path + "image/" + filename);
                         file.transferTo(f);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.error("File save err. prod_name: " + prod_name, e);
                     }
 
                     if (image_urls.equals("")) {

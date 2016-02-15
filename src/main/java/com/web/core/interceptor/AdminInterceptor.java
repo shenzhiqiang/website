@@ -28,7 +28,10 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         } else {
             if (session.getAttribute("priority") == null) {
                 UsersTable user = adminService.getUserByName(username);
-                session.setAttribute("priority", String.valueOf(user.getPriority()));
+                if (user != null)
+                    session.setAttribute("priority", String.valueOf(user.getPriority()));
+                else
+                    return false;
             }
             if (session.getAttribute("priority").equals("0")) {
                 return true;

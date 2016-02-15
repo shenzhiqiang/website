@@ -47,7 +47,7 @@
         limit ${offset},${size}
     </select>
 
-    <insert id="addProdSimple" parameterType="map">
+    <insert id="addProdSimple" parameterType="map" keyProperty="id">
         INSERT INTO ProductsTable (prod_name, prod_introduction, image_urls, cover_image_url)
         VALUES (#{prod_name}, #{prod_introduction}, #{image_urls}, #{cover_image_url});
     </insert>
