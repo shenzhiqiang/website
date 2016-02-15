@@ -4,6 +4,8 @@ import com.web.core.common.ProductsParam;
 import com.web.core.service.AdminService;
 import com.web.core.service.ProductsService;
 import com.web.core.tool.ToolClass;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    private static Log logger = LogFactory.getLog(AdminController.class);
+
     @Resource
     AdminService adminService;
     @Resource
@@ -54,6 +58,8 @@ public class AdminController {
         productsParam.setSubTitle("");
         ret.addObject("productsParam", productsParam);
 
+        logger.info("Admin Products. Page: " + page);
+
         return ret;
     }
 
@@ -71,6 +77,8 @@ public class AdminController {
         String title = productsParam.getTitle();
         productsParam.setTitle("ADMIN  " + title);
         ret.addObject("productsParam", productsParam);
+
+        logger.info("Admin Search: " + searchInfo + ". Page: " + page);
 
         return ret;
     }
@@ -120,6 +128,7 @@ public class AdminController {
             if (adminService.changePasswd(username, newpassword)) {
                 ret.setViewName("put_success");
                 ret.addObject("showtext", "Change Password Success.");
+                logger.info("Change passwd success. USER: " + username);
                 return ret;
             } else {
                 ret.setViewName("changepasswd");
@@ -155,6 +164,7 @@ public class AdminController {
 
         if (prod_name.equals("")) {
             ret.setViewName("addprod_admin");
+            logger.info("add prod fail. prod_name is \"\"");
             return ret;
         }
 
@@ -193,6 +203,7 @@ public class AdminController {
 
         adminService.addProd(params);
 
+        logger.info("add prod success. prod_name: " + prod_name);
         ret.setViewName("put_success");
         return ret;
     }

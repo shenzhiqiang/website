@@ -3,6 +3,8 @@ package com.web.core.service;
 import com.web.core.common.IndexParam;
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.entity.ProductsTable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Service
 public class IndexService {
+    private static Log logger = LogFactory.getLog(IndexService.class);
 
     @Resource
     IProductsTableDao iProductsTableDao;
@@ -22,6 +25,7 @@ public class IndexService {
         IndexParam param = new IndexParam();
 
         List<ProductsTable> prod_list = iProductsTableDao.getTopProd(10);
+        logger.info("getIndexParam(); prod list len:" + String.valueOf(prod_list.size()));
 
         for (ProductsTable prod: prod_list) {
             if (prod.getCover_image_url() != null && prod.getCover_image_url().matches("^http://.*"))

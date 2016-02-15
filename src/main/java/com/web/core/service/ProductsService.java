@@ -5,6 +5,8 @@ import com.web.core.common.ProductParam;
 import com.web.core.common.ProductsParam;
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.entity.ProductsTable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,11 +18,19 @@ import java.util.*;
 
 @Service
 public class ProductsService {
+    private static Log logger = LogFactory.getLog(ProductsService.class);
+
     @Resource
     IProductsTableDao iProductsTableDao;
 
     public ProductParam getProductParam(Integer id){
-        ProductsTable prod = iProductsTableDao.selectById(id);
+        ProductsTable prod;
+        try {
+            prod = iProductsTableDao.selectById(id);
+        } catch (Exception e) {
+            logger.error("Error: iProductsTableDao.selectById()", e);
+            return null;
+        }
 
         ProductParam param;
         if (prod != null) {
@@ -62,26 +72,32 @@ public class ProductsService {
         int size = param.getPageSize();
         sqlParam.put("offset", offset);
         sqlParam.put("size", size);
-        List<ProductsTable> prod_list = iProductsTableDao.getPageProd(sqlParam);
+        List<ProductsTable> prod_list;
+        try {
+            prod_list = iProductsTableDao.getPageProd(sqlParam);
+        } catch (Exception e) {
+            logger.error("Error: iProductsTableDao.getPageProd()", e);
+            prod_list = null;
+        }
 
-        for (ProductsTable prod: prod_list) {
-            if (prod.getCover_image_url() != null && prod.getCover_image_url().matches("^http://.*")) {
-                prod.setExtra_info("outer");
-                String[] imgUrlSplit = prod.getCover_image_url().split("\\.");
-                String imgCoverUrl;
-                try {
-                    imgCoverUrl = imgUrlSplit[0] + ".imgx." + imgUrlSplit[1] + "." + imgUrlSplit[2].split("/")[0] + "/c_pad,h_260,w_360,g_center,b_dddddd/" + imgUrlSplit[2].split("/")[1] + "." + imgUrlSplit[3];
-                    prod.setCover_image_url(imgCoverUrl);
-                } catch (Exception e) {
-                    //
-
-
+        if (prod_list != null) {
+            for (ProductsTable prod : prod_list) {
+                if (prod.getCover_image_url() != null && prod.getCover_image_url().matches("^http://.*")) {
+                    prod.setExtra_info("outer");
+                    String[] imgUrlSplit = prod.getCover_image_url().split("\\.");
+                    String imgCoverUrl;
+                    try {
+                        imgCoverUrl = imgUrlSplit[0] + ".imgx." + imgUrlSplit[1] + "." + imgUrlSplit[2].split("/")[0] + "/c_pad,h_260,w_360,g_center,b_dddddd/" + imgUrlSplit[2].split("/")[1] + "." + imgUrlSplit[3];
+                        prod.setCover_image_url(imgCoverUrl);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
+                    }
                 }
+                if (prod.getProd_name() != null && prod.getProd_name().length() > 15)
+                    prod.setProd_name(prod.getProd_name().substring(0, 14) + "...");
+                if (prod.getProd_introduction() != null && prod.getProd_introduction().length() > 30)
+                    prod.setProd_introduction(prod.getProd_introduction().substring(0, 29) + "...");
             }
-            if (prod.getProd_name() != null && prod.getProd_name().length() > 15)
-                prod.setProd_name(prod.getProd_name().substring(0,14)+"...");
-            if (prod.getProd_introduction() != null && prod.getProd_introduction().length() > 30)
-                prod.setProd_introduction(prod.getProd_introduction().substring(0,29)+"...");
         }
 
         param.setCurrPage(page);
@@ -99,30 +115,36 @@ public class ProductsService {
         sqlParam.put("offset", offset);
         sqlParam.put("size", size);
         sqlParam.put("searchInfo", searchInfo);
-        List<ProductsTable> prod_list = iProductsTableDao.searchResult(sqlParam);
+        List<ProductsTable> prod_list;
+        try {
+            prod_list = iProductsTableDao.searchResult(sqlParam);
+        } catch (Exception e) {
+            logger.error("Error: iProductsTableDao.getPageProd()", e);
+            prod_list = null;
+        }
 
-        for (ProductsTable prod: prod_list) {
-            if (prod.getCover_image_url() != null && prod.getCover_image_url().matches("^http://.*")) {
-                prod.setExtra_info("outer");
-                String[] imgUrlSplit = prod.getCover_image_url().split("\\.");
-                String imgCoverUrl;
-                try {
-                    imgCoverUrl = imgUrlSplit[0] + ".imgx." + imgUrlSplit[1] + "." + imgUrlSplit[2].split("/")[0] + "/c_pad,h_260,w_360,g_center,b_dddddd/" + imgUrlSplit[2].split("/")[1] + "." + imgUrlSplit[3];
-                    prod.setCover_image_url(imgCoverUrl);
-                } catch (Exception e) {
-                    //
-
-
+        if (prod_list != null) {
+            for (ProductsTable prod : prod_list) {
+                if (prod.getCover_image_url() != null && prod.getCover_image_url().matches("^http://.*")) {
+                    prod.setExtra_info("outer");
+                    String[] imgUrlSplit = prod.getCover_image_url().split("\\.");
+                    String imgCoverUrl;
+                    try {
+                        imgCoverUrl = imgUrlSplit[0] + ".imgx." + imgUrlSplit[1] + "." + imgUrlSplit[2].split("/")[0] + "/c_pad,h_260,w_360,g_center,b_dddddd/" + imgUrlSplit[2].split("/")[1] + "." + imgUrlSplit[3];
+                        prod.setCover_image_url(imgCoverUrl);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
+                    }
                 }
+                if (prod.getProd_name() != null && prod.getProd_name().length() > 15)
+                    prod.setProd_name(prod.getProd_name().substring(0, 14) + "...");
+                if (prod.getProd_introduction() != null && prod.getProd_introduction().length() > 30)
+                    prod.setProd_introduction(prod.getProd_introduction().substring(0, 29) + "...");
             }
-            if (prod.getProd_name() != null && prod.getProd_name().length() > 15)
-                prod.setProd_name(prod.getProd_name().substring(0,14)+"...");
-            if (prod.getProd_introduction() != null && prod.getProd_introduction().length() > 30)
-                prod.setProd_introduction(prod.getProd_introduction().substring(0,29)+"...");
         }
 
         param.setTitle("Search \"" + searchInfo + "\":");
-        if (prod_list.size() == 0)
+        if (prod_list == null || prod_list.size() == 0)
             param.setSubTitle("No result match " + searchInfo + ".");
         else
             param.setSubTitle(searchInfo);

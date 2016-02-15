@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 /**
  * Created by shenzhiqiang on 16/1/25.
  */
 
 @Controller
 public class IndexController {
+    private static Log logger = LogFactory.getLog(IndexController.class);
 
     @Resource
     IndexService indexService;
@@ -65,10 +68,12 @@ public class IndexController {
             ret.setViewName("put_success");
             ret.addObject("showtext", username);
             session.setAttribute("username", username);
+            logger.info("login success: " + username);
             return ret;
         } else {
             ret.setViewName("login");
             ret.addObject("error", "Wrong username or passwd.");
+            logger.info("login error: " + username);
             return ret;
         }
 //        RedirectView redirectView = new RedirectView("/");

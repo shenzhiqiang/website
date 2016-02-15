@@ -3,6 +3,8 @@ package com.web.core.controller;
 import com.web.core.common.ProductParam;
 import com.web.core.common.ProductsParam;
 import com.web.core.service.ProductsService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,8 @@ import javax.annotation.Resource;
 
 @Controller
 public class ProductsController {
+    private static Log logger = LogFactory.getLog(ProductsController.class);
+
     @Resource
     ProductsService productsService;
 
@@ -33,6 +37,7 @@ public class ProductsController {
         ret.setViewName("products");
         ret.addObject("productsParam", productsService.getProductsPageParam(page));
 
+        logger.info("Products. Page: " + page);
         return ret;
     }
 
@@ -42,6 +47,8 @@ public class ProductsController {
         ret.setViewName("single");
         ProductParam productParam = productsService.getProductParam(id);
         ret.addObject("productParam", productParam);
+
+        logger.info("Product. ID: " + id);
 
         return ret;
     }
@@ -59,6 +66,7 @@ public class ProductsController {
         ProductsParam productsParam = productsService.getSearchResult(searchInfo, page);
         ret.addObject("productsParam", productsParam);
 
+        logger.info("Search: " + searchInfo + ". Page: " + page);
         return ret;
     }
 

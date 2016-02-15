@@ -8,52 +8,43 @@ import java.util.Objects;
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.UsersTable;
+import com.web.core.tool.ToolClass;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
+import com.web.core.tool.ToolClass.*;
 /**
  * Created by shenzhiqiang on 16/2/2.
  */
 
 @Service
 public class AdminService {
+    private static Log logger = LogFactory.getLog(AdminService.class);
 
     @Resource
     IProductsTableDao iProductsTableDao;
     @Resource
     IUsersTableDao iUsersTableDao;
 
-    public UsersTable getUserByName(String name) {
-        UsersTable user = iUsersTableDao.selectByName(name);
-        return user;
-    }
+//    public UsersTable getUserByName(String name) {
+//        UsersTable user = iUsersTableDao.selectByName(name);
+//        return user;
+//    }
 
-    public String StrToMd5L32(String str){
-        String reStr = null;
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] bytes = md5.digest(str.getBytes());
-            StringBuffer stringBuffer = new StringBuffer();
-            for (byte b : bytes){
-                int bt = b&0xff;
-                if (bt < 16){
-                    stringBuffer.append(0);
-                }
-                stringBuffer.append(Integer.toHexString(bt));
-            }
-            reStr = stringBuffer.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return reStr;
-    }
 
     public boolean checkUserLogin(String name, String passwd) {
-        UsersTable user = iUsersTableDao.selectByName(name);
+        UsersTable user = null;
+        try {
+            user = iUsersTableDao.selectByName(name);
+        } catch (Exception e) {
+            logger.error("Error: checkUserLogin; iUsersTableDao.selectByName()", e);
+            return false;
+        }
         if (user == null)
             return false;
-        if (!StrToMd5L32(passwd).toLowerCase().equals(user.getPasswd().toLowerCase()))
+        if (!ToolClass.StrToMd5L32(passwd).toLowerCase().equals(user.getPasswd().toLowerCase()))
             return false;
 
         return true;
@@ -62,18 +53,37 @@ public class AdminService {
     public boolean changePasswd(String username, String passwd) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", username);
-        params.put("passwd", StrToMd5L32(passwd).toLowerCase());
+        params.put("passwd", ToolClass.StrToMd5L32(passwd).toLowerCase());
 
-        iUsersTableDao.updatePasswd(params);
+        try {
+            iUsersTableDao.updatePasswd(params);
+        } catch (Exception e) {
+            logger.error("Error: changePasswd; iUsersTableDao.updatePasswd()", e);
+            return false;
+        }
 
         return true;
     }
 
     public int addProd(Map<String, Object> params) {
-        return iProductsTableDao.addProdSimple(params);
+        int ret = 0;
+        try {
+            iProductsTableDao.addProdSimple(params);
+            ret = 1;
+        } catch (Exception e) {
+            logger.error("Error: addProd; iProductsTableDao.addProdSimple()", e);
+        }
+        return ret;
     }
 
     public int delOneProd(Integer id) {
-        return iProductsTableDao.delOneById(id);
+        int ret = 0;
+        try {
+            iProductsTableDao.delOneById(id);
+            ret = 1;
+        } catch (Exception e) {
+            logger.error("Error: delOneProd; iProductsTableDao.delOneById()", e);
+        }
+        return ret;
     }
 }
