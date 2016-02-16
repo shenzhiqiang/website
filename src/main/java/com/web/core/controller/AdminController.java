@@ -1,8 +1,10 @@
 package com.web.core.controller;
 
+import com.sina.cloudstorage.services.scs.model.PutObjectResult;
 import com.web.core.common.ProductsParam;
 import com.web.core.service.AdminService;
 import com.web.core.service.ProductsService;
+import com.web.core.tool.SCSTool;
 import com.web.core.tool.ToolClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -181,21 +183,35 @@ public class AdminController {
                 if (!file.isEmpty()) {
                     String filename = file.getOriginalFilename();
                     filename = ToolClass.getImgFilename(filename);
+                    PutObjectResult putObjectResult = null;
 
                     try {
                         File f = new File(path + "image/" + filename);
                         file.transferTo(f);
+                        putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
                     } catch (Exception e) {
                         logger.error("File save err. prod_name: " + prod_name, e);
                     }
 
-                    if (image_urls.equals("")) {
-                        image_urls += "/image/" + filename;
+                    if (putObjectResult == null) {
+                        logger.error("File upload fail. " + filename);
+                        if (image_urls.equals("")) {
+                            image_urls += "/image/" + filename;
+                        } else {
+                            image_urls += ";/image/" + filename;
+                        }
+                        if (cover_image_url.equals("")) {
+                            cover_image_url = "/image/" + filename;
+                        }
                     } else {
-                        image_urls += ";/image/" + filename;
-                    }
-                    if (cover_image_url.equals("")) {
-                        cover_image_url = "/image/" + filename;
+                        if (image_urls.equals("")) {
+                            image_urls += "http://mzx-img.sinacloud.net/" + filename;
+                        } else {
+                            image_urls += ";http://mzx-img.sinacloud.net/" + filename;
+                        }
+                        if (cover_image_url.equals("")) {
+                            cover_image_url = "http://mzx-img.imgx.sinacloud.net/c_pad,h_260,w_360,g_center,b_dddddd/" + filename;
+                        }
                     }
                 }
             }

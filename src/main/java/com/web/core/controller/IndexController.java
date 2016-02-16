@@ -1,7 +1,11 @@
 package com.web.core.controller;
 
+import com.sina.cloudstorage.services.scs.model.Bucket;
+import com.sina.cloudstorage.services.scs.model.ObjectListing;
+import com.sina.cloudstorage.services.scs.model.PutObjectResult;
 import com.web.core.service.AdminService;
 import com.web.core.service.IndexService;
+import com.web.core.tool.SCSTool;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +19,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.io.File;
+import java.util.List;
+
 /**
  * Created by shenzhiqiang on 16/1/25.
  */
@@ -27,6 +35,18 @@ public class IndexController {
     IndexService indexService;
     @Resource
     AdminService adminService;
+
+    @RequestMapping("/test")
+    public void test(HttpServletRequest request) {
+
+        System.out.println("====hh====hh");
+//        List < Bucket > list = SCSTool.getConn().listBuckets();
+//        System.out.println("====getAllBuckets====" + list);
+        PutObjectResult putObjectResult = SCSTool.getConn().putObject("mzx-img",
+                "B.png", new File("/Users/shenzhiqiang/Desktop/website/target/mingzhixuan-1.0-SNAPSHOT/image/6D008352-1E5C-4E4D-B328-4C7E652DF9AB.png"));
+        System.out.println(putObjectResult);
+
+    }
 
     @RequestMapping("/")
     public ModelAndView indexPage(HttpServletRequest request) {
