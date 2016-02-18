@@ -24,5 +24,6 @@ public interface IProductsTableDao {
 
     int addProdSimple(Map<String, Object> params);
     int delOneById(Integer id);
+    int delProdById(Integer id);
 
 }

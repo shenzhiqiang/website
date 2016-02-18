@@ -84,9 +84,9 @@ public class AdminService {
     public int delOneProd(Integer id) {
         int ret = 0;
         try {
-            ret = iProductsTableDao.delOneById(id);
+            ret = iProductsTableDao.delProdById(id);
         } catch (Exception e) {
-            logger.error("Error: delOneProd; iProductsTableDao.delOneById()", e);
+            logger.error("Error: delOneProd; iProductsTableDao.delProdById()", e);
         }
         return ret;
     }

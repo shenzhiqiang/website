@@ -5,20 +5,23 @@
 
     <select id="getRowCount" resultType="java.lang.Integer">
         select count(*) from ProductsTable
+        WHERE is_top >= 0
     </select>
 
     <select id="getSearchRowCount" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(*) from ProductsTable
-        WHERE prod_name REGEXP ".*"#{searchInfo}".*"
+        WHERE prod_name REGEXP ".*"#{searchInfo}".*" AND is_top >= 0
     </select>
 
     <select id="getAllProd" resultType="com.web.core.entity.ProductsTable">
     select * from ProductsTable
+    WHERE is_top >= 0
     order by update_date desc, id desc
     </select>
 
     <select id="getPageProd" resultType="com.web.core.entity.ProductsTable" parameterType="map">
         select * from ProductsTable
+        WHERE is_top >= 0
         order by update_date desc, id desc
         limit ${offset},${size}
     </select>
@@ -32,17 +35,17 @@
 
     <select id="selectById" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.Integer">
         select * from ProductsTable
-        WHERE id = #{id}
+        WHERE id = #{id} AND is_top >= 0
     </select>
 
     <select id="allSearchResult" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.String">
         select * from ProductsTable
-        WHERE prod_name REGEXP ".*"#{searchInfo}".*"
+        WHERE prod_name REGEXP ".*"#{searchInfo}".*" AND is_top >= 0
     </select>
 
     <select id="searchResult" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.String">
         select * from ProductsTable
-        WHERE prod_name REGEXP ".*"#{searchInfo}".*"
+        WHERE prod_name REGEXP ".*"#{searchInfo}".*" AND is_top >= 0
         order by update_date desc, id desc
         limit ${offset},${size}
     </select>
@@ -57,11 +60,13 @@
         WHERE id = #{id}
     </delete>
 
-    <!--<select id="selectByParams" resultType="com.jikexueyuan.demo.entity.TableIp" parameterType="map">-->
-        <!--select * from table_ip-->
-        <!--order by findTime desc-->
-        <!--limit ${offset}, ${size}-->
-    <!--</select>-->
+    <update id="delProdById" parameterType="java.lang.Integer" >
+        UPDATE ProductsTable
+        SET is_top = -1
+        WHERE id = #{id}
+    </update>
+
+
 
     <!--<select id="fetchByParams" resultType="com.jikexueyuan.demo.entity.TableIp" parameterType="map">-->
         <!--select * from table_ip-->

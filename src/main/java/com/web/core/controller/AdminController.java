@@ -44,7 +44,8 @@ public class AdminController {
         int status = adminService.delOneProd(id);
         if (status < 1)
             logger.error("Admin Delete fail. ID: " + id + ", status: " + status);
-        logger.info("Admin Delete prod. ID: " + id + ", status: " + status);
+        else
+            logger.info("Admin Delete prod. ID: " + id + ", status: " + status);
         return "redirect:/admin/products";
     }
 
@@ -211,7 +212,7 @@ public class AdminController {
                             image_urls += ";http://mzx-img.sinacloud.net/" + filename;
                         }
                         if (cover_image_url.equals("")) {
-                            cover_image_url = "http://mzx-img.imgx.sinacloud.net/c_pad,h_260,w_360,g_center,b_dddddd/" + filename;
+                            cover_image_url = "http://mzx-img.sinacloud.net/" + filename;
                         }
                     }
                 }
