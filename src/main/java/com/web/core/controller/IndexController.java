@@ -42,9 +42,9 @@ public class IndexController {
         System.out.println("====hh====hh");
 //        List < Bucket > list = SCSTool.getConn().listBuckets();
 //        System.out.println("====getAllBuckets====" + list);
-        PutObjectResult putObjectResult = SCSTool.getConn().putObject("mzx-img",
-                "B.png", new File("/Users/shenzhiqiang/Desktop/website/target/mingzhixuan-1.0-SNAPSHOT/image/6D008352-1E5C-4E4D-B328-4C7E652DF9AB.png"));
-        System.out.println(putObjectResult);
+//        PutObjectResult putObjectResult = SCSTool.getConn().putObject("mzx-img",
+//                "B.png", new File("/Users/shenzhiqiang/Desktop/website/target/mingzhixuan-1.0-SNAPSHOT/image/6D008352-1E5C-4E4D-B328-4C7E652DF9AB.png"));
+//        System.out.println(putObjectResult);
 
     }
 

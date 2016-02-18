@@ -45,10 +45,4 @@ public class SCSTool {
         return putObjectResult;
     }
 
-    public static void main(String[] args) {
-        SCSTool st = new SCSTool();
-        List<Bucket> list = conn.listBuckets();
-        System.out.println("====getAllBuckets===="+list);
-    }
-
 }

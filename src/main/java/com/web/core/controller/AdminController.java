@@ -189,6 +189,7 @@ public class AdminController {
                         File f = new File(path + "image/" + filename);
                         file.transferTo(f);
                         putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
+                        f.delete();
                     } catch (Exception e) {
                         logger.error("File save err. prod_name: " + prod_name, e);
                     }
