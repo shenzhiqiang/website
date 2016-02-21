@@ -8,6 +8,7 @@ import java.util.Objects;
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.UsersTable;
+import com.web.core.tool.MQ.MQProducer;
 import com.web.core.tool.ToolClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -85,6 +86,12 @@ public class AdminService {
         int ret = 0;
         try {
             ret = iProductsTableDao.delProdById(id);
+            MQProducer mqProducer = new MQProducer("del_queue");
+            HashMap message = new HashMap();
+            message.put("del_id", id);
+            mqProducer.sendMessage(message);
+            System.out.println("Message Number " + id + " sent.");
+
         } catch (Exception e) {
             logger.error("Error: delOneProd; iProductsTableDao.delProdById()", e);
         }

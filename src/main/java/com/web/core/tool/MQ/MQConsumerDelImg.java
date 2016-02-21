@@ -14,15 +14,18 @@ import org.springframework.util.SerializationUtils;
 /**
  * Created by shenzhiqiang on 16/2/18.
  */
-public class MQConsumer extends RMQ implements Runnable, Consumer {
-    public MQConsumer(String endPointName) throws IOException{
+public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
+    public MQConsumerDelImg(String endPointName) throws IOException{
         super(endPointName);
+        Thread consumerThread = new Thread(this);
+        consumerThread.start();
     }
 
     public void run() {
         try {
             //start consuming messages. Auto acknowledge messages.
-            channel.basicConsume(endPointName, true,this);
+            boolean ack = false; // message acknowledgments
+            channel.basicConsume(endPointName, ack, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +44,8 @@ public class MQConsumer extends RMQ implements Runnable, Consumer {
     public void handleDelivery(String consumerTag, Envelope env,
                                BasicProperties props, byte[] body) throws IOException {
         Map map = (HashMap) SerializationUtils.deserialize(body);
-        System.out.println("Message Number "+ map.get("message number") + " received.");
+        System.out.println("Message Number "+ map.get("del_id") + " received.");
+        channel.basicAck(env.getDeliveryTag(), false);
 
     }
 

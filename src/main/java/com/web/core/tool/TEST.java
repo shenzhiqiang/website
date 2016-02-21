@@ -1,6 +1,6 @@
 package com.web.core.tool;
 
-import com.web.core.tool.MQ.MQConsumer;
+import com.web.core.tool.MQ.MQConsumerDelImg;
 import com.web.core.tool.MQ.MQProducer;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class TEST {
     public TEST() throws Exception{
-        MQConsumer consumer = new MQConsumer("queue");
+        MQConsumerDelImg consumer = new MQConsumerDelImg("queue");
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
 
