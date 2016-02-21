@@ -76,6 +76,9 @@
                                             <!--location="classpath:dbconfig.properties" />-->
        <!--</beans>-->
 
+    <bean id="mqProducer" class="com.web.core.tool.MQ.MQProducer">
+        <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
+    </bean>
     <bean id="delImgconsumer" class="com.web.core.tool.MQ.MQConsumerDelImg">
         <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
     </bean>

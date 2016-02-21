@@ -25,6 +25,8 @@ public class AdminService {
     private static Log logger = LogFactory.getLog(AdminService.class);
 
     @Resource
+    MQProducer mqDelProducer;
+    @Resource
     IProductsTableDao iProductsTableDao;
     @Resource
     IUsersTableDao iUsersTableDao;
@@ -86,11 +88,10 @@ public class AdminService {
         int ret = 0;
         try {
             ret = iProductsTableDao.delProdById(id);
-            MQProducer mqProducer = new MQProducer("del_queue");
             HashMap message = new HashMap();
             message.put("del_id", id);
-            mqProducer.sendMessage(message);
-            System.out.println("Message Number " + id + " sent.");
+            mqDelProducer.sendMessage(message);
+//            System.out.println("Message Number " + id + " sent.");
 
         } catch (Exception e) {
             logger.error("Error: delOneProd; iProductsTableDao.delProdById()", e);

@@ -3,6 +3,8 @@ package com.web.core.tool.MQ;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
  */
 public abstract class RMQ{
 
+    private static Log logger = LogFactory.getLog(RMQ.class);
     protected Channel channel;
     protected Connection connection;
     protected String endPointName;

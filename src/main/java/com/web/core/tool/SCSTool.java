@@ -45,4 +45,13 @@ public class SCSTool {
         return putObjectResult;
     }
 
+    public static boolean delObject(String filename) {
+        try {
+            conn.deleteObject(bucketName, filename);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 }

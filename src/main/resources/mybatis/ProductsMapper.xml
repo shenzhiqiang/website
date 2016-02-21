@@ -38,6 +38,11 @@
         WHERE id = #{id} AND is_top >= 0
     </select>
 
+    <select id="selectDelOneById" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.Integer">
+        select * from ProductsTable
+        WHERE id = #{id}
+    </select>
+
     <select id="allSearchResult" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.String">
         select * from ProductsTable
         WHERE prod_name REGEXP ".*"#{searchInfo}".*" AND is_top >= 0
