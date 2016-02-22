@@ -26,6 +26,8 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
 
     @Resource
     IProductsTableDao iProductsTableDao;
+    @Resource
+    MQProducer mqDelProducer;
 
     public MQConsumerDelImg(String endPointName) throws IOException{
         super(endPointName);
@@ -65,7 +67,7 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
             logger.error(e.getMessage(), e);
         }
 
-        boolean delStatus = false;
+        boolean delStatus = true;
         if (prod != null)
             try {
                 String[] coverImgSplit = prod.getCover_image_url().split("/");
@@ -73,7 +75,9 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
                     String filename = coverImgSplit[coverImgSplit.length - 1];
                     System.out.println(filename);
 
-                    delStatus = SCSTool.delObject(filename);
+                    if (!SCSTool.delObject(filename)) {
+                        delStatus = false;
+                    }
                 }
 
                 String[] imgUrlsSplit = prod.getImage_urls().split(";");
@@ -81,18 +85,36 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
                     String[] imgSplit = imgStr.split("/");
                     if (imgSplit.length > 0) {
                         String filename = coverImgSplit[imgSplit.length - 1];
-                        delStatus = SCSTool.delObject(filename);
+                        if (!SCSTool.delObject(filename)) {
+                            delStatus = false;
+                        }
                     }
                 }
-
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
 
-        if (delStatus == true && prod != null)
+        if (!delStatus) {
+            try{
+                HashMap message = new HashMap();
+                message.put("del_id", (Integer) map.get("del_id"));
+                mqDelProducer.sendMessage(message);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
+        if (delStatus && prod != null)
             try {
                 iProductsTableDao.delOneById((Integer) map.get("del_id"));
             } catch (Exception e) {
+                try{
+                    HashMap message = new HashMap();
+                    message.put("del_id", (Integer) map.get("del_id"));
+                    mqDelProducer.sendMessage(message);
+                } catch (Exception ex) {
+                    logger.error(e.getMessage(), ex);
+                }
                 logger.error(e.getMessage(), e);
             }
         logger.info("RMQ Del ID: " + map.get("del_id"));
