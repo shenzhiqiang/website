@@ -73,7 +73,6 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
                 String[] coverImgSplit = prod.getCover_image_url().split("/");
                 if (coverImgSplit.length > 0) {
                     String filename = coverImgSplit[coverImgSplit.length - 1];
-                    System.out.println(filename);
 
                     if (!SCSTool.delObject(filename)) {
                         delStatus = false;
@@ -84,7 +83,7 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
                 for(String imgStr: imgUrlsSplit) {
                     String[] imgSplit = imgStr.split("/");
                     if (imgSplit.length > 0) {
-                        String filename = coverImgSplit[imgSplit.length - 1];
+                        String filename = imgSplit[imgSplit.length - 1];
                         if (!SCSTool.delObject(filename)) {
                             delStatus = false;
                         }

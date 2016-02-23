@@ -128,10 +128,11 @@
           <div class="contact-one">
           <form action="${domain}/admin/add" method="post" enctype="multipart/form-data">
             <label>Prod name: </label><input type="text" name="prod_name"/><br/>
-            <label>Prod introduction: </label><input type="text" name="prod_introduction"/><br/>
-            <label>img01: </label><input type="file" name="imgs"/><br/>
-            <label>img02: </label><input type="file" name="imgs"/><br/>
-            <label>img03: </label><input type="file" name="imgs"/><br/>
+            <label>Prod introduction: </label><textarea name="prod_introduction"></textarea><br/>
+            <p id="imgs">
+              <label>img: </label><input type="file" name="imgs"/><br/>
+            </p>
+            <input type="button" id="addimg" value="ADD IMG">
             <input type="submit" value="ADD"/>
           </form>
           </div>
@@ -187,6 +188,13 @@
       $( ".opacity-nav" ).fadeToggle( "slow", "linear" );
     // Animation complete.
     });
+    $(document).ready(function(){
+
+      $("#addimg").click(function(){
+        $("#imgs").append("<label>img: </label><input type='file' name='imgs'/><br/>");
+      });
+    });
+
   </script>
 
 
