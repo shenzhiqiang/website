@@ -83,5 +83,4 @@
         <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
     </bean>
 
-    <!--<bean id="test" class="com.web.core.tool.TEST"></bean>-->
 </beans>
