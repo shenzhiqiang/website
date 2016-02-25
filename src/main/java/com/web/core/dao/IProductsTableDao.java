@@ -18,6 +18,8 @@ public interface IProductsTableDao {
     List<ProductsTable> getAllProd();
     List<ProductsTable> getPageProd(Map<String, Object> pageParam);
     List<ProductsTable> getTopProd(int num);
+    List<ProductsTable> getAllTopProd();
+
     ProductsTable selectById(Integer id);
     ProductsTable selectDelOneById(Integer id);
     List<ProductsTable> allSearchResult(String searchInfo);

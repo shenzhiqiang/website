@@ -33,6 +33,12 @@
         limit 0, #{num}
     </select>
 
+    <select id="getAllTopProd" resultType="com.web.core.entity.ProductsTable">
+        select * from ProductsTable
+        WHERE is_top > 0
+        order by update_date desc, id desc
+    </select>
+
     <select id="selectById" resultType="com.web.core.entity.ProductsTable" parameterType="java.lang.Integer">
         select * from ProductsTable
         WHERE id = #{id} AND is_top >= 0

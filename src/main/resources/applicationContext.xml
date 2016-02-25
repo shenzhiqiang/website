@@ -82,5 +82,6 @@
     <bean id="delImgconsumer" class="com.web.core.tool.MQ.MQConsumerDelImg">
         <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
     </bean>
+    <bean id="topIndex" class="com.web.core.index.TopIndex"></bean>
 
 </beans>
