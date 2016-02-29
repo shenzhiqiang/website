@@ -2,6 +2,7 @@ package com.web.core.controller;
 
 import com.sina.cloudstorage.services.scs.model.PutObjectResult;
 import com.web.core.common.ProductsParam;
+import com.web.core.kv.RedisClient;
 import com.web.core.service.AdminService;
 import com.web.core.service.ProductsService;
 import com.web.core.tool.SCSTool;
@@ -37,6 +38,8 @@ public class AdminController {
     AdminService adminService;
     @Resource
     ProductsService productsService;
+    @Resource
+    RedisClient redisClient;
 
     @RequestMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Integer id) {
@@ -56,13 +59,17 @@ public class AdminController {
     }
 
     @RequestMapping("/products/{page}")
-    public ModelAndView getProductsPage(@PathVariable("page") Integer page) {
+    public ModelAndView getProductsPage(@PathVariable("page") Integer page, HttpServletRequest request) {
         ModelAndView ret = new ModelAndView();
         ret.setViewName("products_admin");
         ProductsParam productsParam = productsService.getProductsPageParam(page);
         productsParam.setTitle("ADMIN");
         productsParam.setSubTitle("");
         ret.addObject("productsParam", productsParam);
+
+        HttpSession session = request.getSession();
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Admin Products. Page: " + page);
 
@@ -76,13 +83,17 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/search/{page}", method = RequestMethod.GET)
-    public ModelAndView searchResultPage(@RequestParam("searchinfo") String searchInfo, @PathVariable("page") Integer page) {
+    public ModelAndView searchResultPage(@RequestParam("searchinfo") String searchInfo, @PathVariable("page") Integer page, HttpServletRequest request) {
         ModelAndView ret = new ModelAndView();
         ret.setViewName("searchproducts_admin");
         ProductsParam productsParam = productsService.getSearchResult(searchInfo, page);
         String title = productsParam.getTitle();
         productsParam.setTitle("ADMIN  " + title);
         ret.addObject("productsParam", productsParam);
+
+        HttpSession session = request.getSession();
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Admin Search: " + searchInfo + ". Page: " + page);
 
@@ -93,10 +104,17 @@ public class AdminController {
     /* Change password */
     @RequestMapping(value = "/passwd", method = RequestMethod.GET)
     public ModelAndView changePasswdPage(HttpServletRequest request) {
-        if (request.getSession().getAttribute("username") == null)
-            return new ModelAndView("login");
+//        if (request.getSession().getAttribute("username") == null)
+        if (!redisClient.checkExists(request.getSession().getId()))
+                return new ModelAndView("login");
         else {
-            return new ModelAndView("changepasswd");
+            ModelAndView ret = new ModelAndView("changepasswd");
+
+            HttpSession session = request.getSession();
+            Map<String, String> sessionMap = redisClient.getMap(session.getId());
+            ret.addObject("username", sessionMap.get("username"));
+
+            return ret;
         }
     }
 
@@ -107,6 +125,9 @@ public class AdminController {
                                       @RequestParam("newpassword2") String newpassword2) {
         HttpSession session = request.getSession();
         ModelAndView ret = new ModelAndView();
+
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        ret.addObject("username", sessionMap.get("username"));
 
         if (oldpassword.equals("") || newpassword.equals("") || newpassword2.equals("")) {
             ret.addObject("error", "Password can't NULL.");
@@ -124,7 +145,8 @@ public class AdminController {
             return ret;
         }
 
-        String username = (String)session.getAttribute("username");
+        String username =  sessionMap.get("username");
+//        String username = (String)session.getAttribute("username");
         if (username == null) {
             ret.setViewName("login");
             return ret;
@@ -152,10 +174,15 @@ public class AdminController {
     /* ADD prod */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addProdPage(HttpServletRequest request) {
-        if (request.getSession().getAttribute("username") == null)
+        HttpSession session = request.getSession();
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String username =  sessionMap.get("username");
+        if (username == null)
             return new ModelAndView("login");
         else {
-            return new ModelAndView("addprod_admin");
+            ModelAndView ret = new ModelAndView("addprod_admin");
+            ret.addObject("username", sessionMap.get("username"));
+            return ret;
         }
     }
 
@@ -166,7 +193,11 @@ public class AdminController {
                                         @RequestParam("imgs") MultipartFile[] files) {
         ModelAndView ret = new ModelAndView();
         Map<String, Object> params = new HashMap<String, Object>();
-        String path = request.getSession().getServletContext().getRealPath("");
+        HttpSession session = request.getSession();
+        String path = session.getServletContext().getRealPath("");
+
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        ret.addObject("username", sessionMap.get("username"));
 
         if (prod_name.equals("")) {
             ret.setViewName("addprod_admin");

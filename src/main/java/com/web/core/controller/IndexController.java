@@ -3,6 +3,7 @@ package com.web.core.controller;
 import com.sina.cloudstorage.services.scs.model.Bucket;
 import com.sina.cloudstorage.services.scs.model.ObjectListing;
 import com.sina.cloudstorage.services.scs.model.PutObjectResult;
+import com.web.core.kv.RedisClient;
 import com.web.core.service.AdminService;
 import com.web.core.service.IndexService;
 import com.web.core.tool.SCSTool;
@@ -21,7 +22,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shenzhiqiang on 16/1/25.
@@ -31,6 +34,8 @@ import java.util.List;
 public class IndexController {
     private static Log logger = LogFactory.getLog(IndexController.class);
 
+    @Resource
+    RedisClient redisClient;
     @Resource
     IndexService indexService;
     @Resource
@@ -52,9 +57,11 @@ public class IndexController {
     public ModelAndView indexPage(HttpServletRequest request) {
         ModelAndView ret = new ModelAndView();
         ret.setViewName("index");
-
         HttpSession session = request.getSession();
-        ret.addObject("username", session.getAttribute("username"));
+
+//        ret.addObject("username", session.getAttribute("username"));
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        ret.addObject("username", sessionMap.get("username"));
         ret.addObject("indexParam", indexService.getIndexParam());
 
         return ret;
@@ -66,13 +73,17 @@ public class IndexController {
         ret.setViewName("about_us");
 
         HttpSession session = request.getSession();
-        ret.addObject("username", session.getAttribute("username"));
+//        ret.addObject("username", session.getAttribute("username"));
+        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        ret.addObject("username", sessionMap.get("username"));
+
         return ret;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(HttpServletRequest request) {
-        if (request.getSession().getAttribute("username") == null)
+//        if (request.getSession().getAttribute("username") == null)
+        if (!redisClient.checkExists(request.getSession().getId()))
             return new ModelAndView("login");
         else {
             return new ModelAndView("redirect:/");
@@ -85,9 +96,14 @@ public class IndexController {
         ModelAndView ret = new ModelAndView();
 
         if (adminService.checkUserLogin(username, passwd)) {
+            Map<String, String> sessionMap = new HashMap<String, String>();
+            sessionMap.put("username", username);
+            redisClient.setMapWithExpire(session.getId(), sessionMap, 12*60*60);
+
             ret.setViewName("put_success");
             ret.addObject("showtext", username);
-            session.setAttribute("username", username);
+            ret.addObject("username", username);
+//            session.setAttribute("username", username);
             logger.info("login success: " + username);
             return ret;
         } else {
@@ -105,7 +121,8 @@ public class IndexController {
     @RequestMapping("/logout")
     public ModelAndView logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute("username", null);
+//        session.setAttribute("username", null);
+        redisClient.delMap(session.getId());
 
         return new ModelAndView("redirect:/");
     }

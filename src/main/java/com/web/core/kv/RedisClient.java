@@ -37,6 +37,20 @@ public class RedisClient {
             shardedJedisPool.returnResource(jedis);
     }
 
+    public void setMapWithExpire(String key, Map<String, String> value, Integer time) {
+        ShardedJedis jedis = null;
+        try {
+            jedis = shardedJedisPool.getResource();
+            jedis.hmset(key, value);
+            jedis.expire(key, time);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        if (jedis != null)
+            shardedJedisPool.returnResource(jedis);
+    }
+
     public Map<String, String> getMap(String key) {
         ShardedJedis jedis = null;
         Map<String, String> resMap = null;
@@ -53,6 +67,34 @@ public class RedisClient {
         return resMap;
     }
 
+    public boolean checkExists(String key) {
+        Boolean isExists = false;
+        ShardedJedis jedis = null;
+        try {
+            jedis = shardedJedisPool.getResource();
+            isExists = jedis.exists(key);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        if (jedis != null)
+            shardedJedisPool.returnResource(jedis);
+
+        return isExists;
+    }
+
+    public void delMap(String key) {
+        ShardedJedis jedis = null;
+        try {
+            jedis = shardedJedisPool.getResource();
+            jedis.del(key);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        if (jedis != null)
+            shardedJedisPool.returnResource(jedis);
+    }
 
     public void run111() {
         Map<String, String> map = new HashMap<String, String>();
