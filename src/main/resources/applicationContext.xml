@@ -20,7 +20,12 @@
        <description>Spring公共配置</description>
         <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:dbconfig.properties" />
+            <property name="locations">
+                <list>
+                    <value>classpath:dbconfig.properties</value>
+                    <value>classpath:redis.properties</value>
+                </list>
+            </property>
         </bean>
        <!-- 开启定时任务 -->
        <task:annotation-driven/>
@@ -83,5 +88,37 @@
         <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
     </bean>
     <bean id="topIndex" class="com.web.core.index.TopIndex"></bean>
+
+    <!--redis-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal}" />
+        <property name="minIdle" value="${redis.pool.minIdle}" />
+        <property name="maxIdle" value="${redis.pool.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.pool.maxWait}" />
+        <property name="testWhileIdle" value="${redis.pool.testWhileIdle}" />
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+        <property name="testOnReturn" value="${redis.pool.testOnReturn}" />
+    </bean>
+
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1">
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg index="0" value="${redis1.ip}" />
+                    <constructor-arg index="1" value="${redis1.port}" type="int" />
+                </bean>
+                <!--<bean class="redis.clients.jedis.JedisShardInfo">-->
+                    <!--<constructor-arg index="0"-->
+                            <!--value="${redis2.ip}" />-->
+                    <!--<constructor-arg index="1" value="${redis.port}" type="int" />-->
+                <!--</bean>-->
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="redisClient" class="com.web.core.kv.RedisClient">
+        <constructor-arg name="pool" ref="shardedJedisPool" />
+    </bean>
 
 </beans>
