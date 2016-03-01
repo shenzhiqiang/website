@@ -29,8 +29,11 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
     @Resource
     MQProducer mqDelProducer;
 
-    public MQConsumerDelImg(String endPointName) throws IOException{
-        super(endPointName);
+    boolean ack = false; // message acknowledgments
+
+
+    public MQConsumerDelImg(String endPointName, String host, int port) throws IOException{
+        super(endPointName, host, port);
         Thread consumerThread = new Thread(this);
         consumerThread.start();
     }
@@ -38,7 +41,6 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
     public void run() {
         try {
             //start consuming messages. Auto acknowledge messages.
-            boolean ack = false; // message acknowledgments
             channel.basicConsume(endPointName, ack, this);
         } catch (IOException e) {
             e.printStackTrace();

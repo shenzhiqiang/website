@@ -19,14 +19,15 @@ public abstract class RMQ{
     protected Connection connection;
     protected String endPointName;
 
-    public RMQ(String endpointName) throws IOException{
+    public RMQ(String endpointName, String host, int port) throws IOException{
         this.endPointName = endpointName;
 
         //Create a connection factory
         ConnectionFactory factory = new ConnectionFactory();
 
         //hostname of your rabbitmq server
-        factory.setHost("localhost");
+        factory.setHost(host);
+        factory.setPort(port);
 
         //getting a connection
         connection = factory.newConnection();

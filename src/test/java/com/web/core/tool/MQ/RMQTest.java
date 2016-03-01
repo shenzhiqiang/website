@@ -20,11 +20,11 @@ public class RMQTest extends TestCase {
 
     @Test
     public void TEST() throws Exception{
-        MQConsumerDelImg consumer = new MQConsumerDelImg("queue");
+        MQConsumerDelImg consumer = new MQConsumerDelImg("queue", "localhost", 5672);
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
 
-        MQProducer producer = new MQProducer("queue");
+        MQProducer producer = new MQProducer("queue", "localhost", 5672);
 
         for (int i = 0; i < 5; i++) {
             HashMap message = new HashMap();

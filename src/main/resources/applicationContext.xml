@@ -24,6 +24,7 @@
                 <list>
                     <value>classpath:dbconfig.properties</value>
                     <value>classpath:redis.properties</value>
+                    <value>classpath:rmq.properties</value>
                 </list>
             </property>
         </bean>
@@ -82,10 +83,14 @@
        <!--</beans>-->
 
     <bean id="mqDelProducer" class="com.web.core.tool.MQ.MQProducer">
-        <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
+        <constructor-arg name="endPointName" value="${rmq.delQueueName}"/>
+        <constructor-arg name="host" value="${rmq.host}"/>
+        <constructor-arg name="port" value="${rmq.port}"/>
     </bean>
     <bean id="delImgconsumer" class="com.web.core.tool.MQ.MQConsumerDelImg">
-        <constructor-arg type="java.lang.String" value="del_queue"></constructor-arg>
+        <constructor-arg name="endPointName" value="${rmq.delQueueName}"/>
+        <constructor-arg name="host" value="${rmq.host}"/>
+        <constructor-arg name="port" value="${rmq.port}"/>
     </bean>
     <bean id="topIndex" class="com.web.core.index.TopIndex"></bean>
 

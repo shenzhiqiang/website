@@ -10,8 +10,8 @@ import java.io.Serializable;
  */
 public class MQProducer extends RMQ {
 
-    public MQProducer(String endPointName) throws IOException{
-        super(endPointName);
+    public MQProducer(String endPointName, String host, int port) throws IOException{
+        super(endPointName, host, port);
     }
 
     public void sendMessage(Serializable object) throws IOException {
