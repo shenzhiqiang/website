@@ -4,6 +4,7 @@ import com.web.core.common.ProductParam;
 import com.web.core.common.ProductsParam;
 import com.web.core.kv.RedisClient;
 import com.web.core.service.ProductsService;
+import com.web.core.tool.ToolClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -43,8 +44,8 @@ public class ProductsController {
         ret.setViewName("products");
         ret.addObject("productsParam", productsService.getProductsPageParam(page));
 
-        HttpSession session = request.getSession();
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Products. Page: " + page);
@@ -58,8 +59,8 @@ public class ProductsController {
         ProductParam productParam = productsService.getProductParam(id);
         ret.addObject("productParam", productParam);
 
-        HttpSession session = request.getSession();
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Product. ID: " + id);
@@ -80,8 +81,8 @@ public class ProductsController {
         ProductsParam productsParam = productsService.getSearchResult(searchInfo, page);
         ret.addObject("productsParam", productsParam);
 
-        HttpSession session = request.getSession();
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Search: " + searchInfo + ". Page: " + page);

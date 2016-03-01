@@ -7,6 +7,7 @@ import com.web.core.kv.RedisClient;
 import com.web.core.service.AdminService;
 import com.web.core.service.IndexService;
 import com.web.core.tool.SCSTool;
+import com.web.core.tool.ToolClass;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +45,7 @@ public class IndexController {
     @RequestMapping("/test")
     public void test(HttpServletRequest request) {
 
-        System.out.println("====hh====hh");
+        System.out.println(request.getServletContext().getRealPath(""));
 //        List < Bucket > list = SCSTool.getConn().listBuckets();
 //        System.out.println("====getAllBuckets====" + list);
 //        PutObjectResult putObjectResult = SCSTool.getConn().putObject("mzx-img",
@@ -57,10 +58,11 @@ public class IndexController {
     public ModelAndView indexPage(HttpServletRequest request) {
         ModelAndView ret = new ModelAndView();
         ret.setViewName("index");
-        HttpSession session = request.getSession();
+        String sid = ToolClass.getSidFromCookie(request);
 
-//        ret.addObject("username", session.getAttribute("username"));
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        System.out.println("/ sid: "+sid);
+
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
         ret.addObject("indexParam", indexService.getIndexParam());
 
@@ -71,10 +73,9 @@ public class IndexController {
     public ModelAndView aboutPage(HttpServletRequest request) {
         ModelAndView ret = new ModelAndView();
         ret.setViewName("about_us");
+        String sid = ToolClass.getSidFromCookie(request);
 
-        HttpSession session = request.getSession();
-//        ret.addObject("username", session.getAttribute("username"));
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         return ret;
@@ -82,8 +83,9 @@ public class IndexController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(HttpServletRequest request) {
-//        if (request.getSession().getAttribute("username") == null)
-        if (!redisClient.checkExists(request.getSession().getId()))
+        String sid = ToolClass.getSidFromCookie(request);
+
+        if (!redisClient.checkExists(sid))
             return new ModelAndView("login");
         else {
             return new ModelAndView("redirect:/");
@@ -92,18 +94,17 @@ public class IndexController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView loginPagePost(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("passwd") String passwd) {
-        HttpSession session = request.getSession();
         ModelAndView ret = new ModelAndView();
+        String sid = ToolClass.getSidFromCookie(request);
 
         if (adminService.checkUserLogin(username, passwd)) {
             Map<String, String> sessionMap = new HashMap<String, String>();
             sessionMap.put("username", username);
-            redisClient.setMapWithExpire(session.getId(), sessionMap, 12*60*60);
+            redisClient.setMapWithExpire(sid, sessionMap, 12 * 60 * 60);
 
             ret.setViewName("put_success");
             ret.addObject("showtext", username);
             ret.addObject("username", username);
-//            session.setAttribute("username", username);
             logger.info("login success: " + username);
             return ret;
         } else {
@@ -120,9 +121,9 @@ public class IndexController {
 
     @RequestMapping("/logout")
     public ModelAndView logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-//        session.setAttribute("username", null);
-        redisClient.delMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+
+        redisClient.delMap(sid);
 
         return new ModelAndView("redirect:/");
     }

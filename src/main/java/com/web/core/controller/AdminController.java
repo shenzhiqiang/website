@@ -67,8 +67,8 @@ public class AdminController {
         productsParam.setSubTitle("");
         ret.addObject("productsParam", productsParam);
 
-        HttpSession session = request.getSession();
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Admin Products. Page: " + page);
@@ -91,8 +91,8 @@ public class AdminController {
         productsParam.setTitle("ADMIN  " + title);
         ret.addObject("productsParam", productsParam);
 
-        HttpSession session = request.getSession();
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         logger.info("Admin Search: " + searchInfo + ". Page: " + page);
@@ -104,14 +104,14 @@ public class AdminController {
     /* Change password */
     @RequestMapping(value = "/passwd", method = RequestMethod.GET)
     public ModelAndView changePasswdPage(HttpServletRequest request) {
-//        if (request.getSession().getAttribute("username") == null)
-        if (!redisClient.checkExists(request.getSession().getId()))
+        String sid = ToolClass.getSidFromCookie(request);
+
+        if (!redisClient.checkExists(sid))
                 return new ModelAndView("login");
         else {
             ModelAndView ret = new ModelAndView("changepasswd");
 
-            HttpSession session = request.getSession();
-            Map<String, String> sessionMap = redisClient.getMap(session.getId());
+            Map<String, String> sessionMap = redisClient.getMap(sid);
             ret.addObject("username", sessionMap.get("username"));
 
             return ret;
@@ -123,10 +123,10 @@ public class AdminController {
                                       @RequestParam("oldpassword") String oldpassword,
                                       @RequestParam("newpassword") String newpassword,
                                       @RequestParam("newpassword2") String newpassword2) {
-        HttpSession session = request.getSession();
+        String sid = ToolClass.getSidFromCookie(request);
         ModelAndView ret = new ModelAndView();
 
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         if (oldpassword.equals("") || newpassword.equals("") || newpassword2.equals("")) {
@@ -146,7 +146,6 @@ public class AdminController {
         }
 
         String username =  sessionMap.get("username");
-//        String username = (String)session.getAttribute("username");
         if (username == null) {
             ret.setViewName("login");
             return ret;
@@ -174,8 +173,8 @@ public class AdminController {
     /* ADD prod */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addProdPage(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         String username =  sessionMap.get("username");
         if (username == null)
             return new ModelAndView("login");
@@ -193,10 +192,10 @@ public class AdminController {
                                         @RequestParam("imgs") MultipartFile[] files) {
         ModelAndView ret = new ModelAndView();
         Map<String, Object> params = new HashMap<String, Object>();
-        HttpSession session = request.getSession();
-        String path = session.getServletContext().getRealPath("");
+        String path = request.getServletContext().getRealPath("");
+        String sid = ToolClass.getSidFromCookie(request);
 
-        Map<String, String> sessionMap = redisClient.getMap(session.getId());
+        Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));
 
         if (prod_name.equals("")) {

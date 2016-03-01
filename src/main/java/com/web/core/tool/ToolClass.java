@@ -1,5 +1,7 @@
 package com.web.core.tool;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.security.MessageDigest;
 
 /**
@@ -31,4 +33,18 @@ public class ToolClass {
         String suffix = filename.substring(filename.lastIndexOf(".") + 1);
         return ToolClass.StrToMd5L32(filename) + String.valueOf(System.currentTimeMillis()) + "." + suffix;
     }
+
+    public static String getSidFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie c = cookies[i];
+                if ("sid".equals(c.getName())) {
+                    return c.getValue();
+                }
+            }
+        }
+        return "";
+    }
+
 }
