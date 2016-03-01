@@ -73,21 +73,25 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
         if (prod != null)
             try {
                 String[] coverImgSplit = prod.getCover_image_url().split("/");
-                if (coverImgSplit.length > 0) {
-                    String filename = coverImgSplit[coverImgSplit.length - 1];
+                if (!prod.getCover_image_url().equals("")) {
+                    if (coverImgSplit.length > 0) {
+                        String filename = coverImgSplit[coverImgSplit.length - 1];
 
-                    if (!SCSTool.delObject(filename)) {
-                        delStatus = false;
+                        if (!SCSTool.delObject(filename)) {
+                            delStatus = false;
+                        }
                     }
                 }
 
-                String[] imgUrlsSplit = prod.getImage_urls().split(";");
-                for(String imgStr: imgUrlsSplit) {
-                    String[] imgSplit = imgStr.split("/");
-                    if (imgSplit.length > 0) {
-                        String filename = imgSplit[imgSplit.length - 1];
-                        if (!SCSTool.delObject(filename)) {
-                            delStatus = false;
+                if (!prod.getImage_urls().equals("")) {
+                    String[] imgUrlsSplit = prod.getImage_urls().split(";");
+                    for(String imgStr: imgUrlsSplit) {
+                        String[] imgSplit = imgStr.split("/");
+                        if (imgSplit.length > 0) {
+                            String filename = imgSplit[imgSplit.length - 1];
+                            if (!SCSTool.delObject(filename)) {
+                                delStatus = false;
+                            }
                         }
                     }
                 }

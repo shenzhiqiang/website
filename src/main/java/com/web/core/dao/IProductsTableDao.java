@@ -29,4 +29,7 @@ public interface IProductsTableDao {
     int delOneById(Integer id);
     int delProdById(Integer id);
 
+    int updateProd(Map<String, Object> params);
+    int setCover(Map<String, Object> params);
+    int updateImg(Map<String, Object> params);
 }

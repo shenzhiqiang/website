@@ -60,7 +60,7 @@ public class IndexController {
         ret.setViewName("index");
         String sid = ToolClass.getSidFromCookie(request);
 
-        System.out.println("/ sid: "+sid);
+//        System.out.println("/ sid: "+sid);
 
         Map<String, String> sessionMap = redisClient.getMap(sid);
         ret.addObject("username", sessionMap.get("username"));

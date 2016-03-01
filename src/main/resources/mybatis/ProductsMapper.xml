@@ -77,7 +77,23 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateProd" parameterType="map" >
+        UPDATE ProductsTable
+        SET prod_name = #{prod_name}, prod_introduction = #{prod_introduction}, image_urls = #{image_urls}
+        WHERE id = #{id}
+    </update>
 
+    <update id="setCover" parameterType="map" >
+        UPDATE ProductsTable
+        SET cover_image_url = #{cover_image_url}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateImg" parameterType="map" >
+        UPDATE ProductsTable
+        SET image_urls = #{image_urls}
+        WHERE id = #{id}
+    </update>
 
     <!--<select id="fetchByParams" resultType="com.jikexueyuan.demo.entity.TableIp" parameterType="map">-->
         <!--select * from table_ip-->

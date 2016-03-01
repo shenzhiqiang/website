@@ -1,6 +1,7 @@
 package com.web.core.controller;
 
 import com.sina.cloudstorage.services.scs.model.PutObjectResult;
+import com.web.core.common.ProductParam;
 import com.web.core.common.ProductsParam;
 import com.web.core.kv.RedisClient;
 import com.web.core.service.AdminService;
@@ -257,6 +258,116 @@ public class AdminController {
         logger.info("add prod success. prod_name: " + prod_name);
         ret.setViewName("put_success");
         return ret;
+    }
+
+//    Update prod
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public ModelAndView updateProdPage(@PathVariable("id") Integer id, HttpServletRequest request) {
+        String sid = ToolClass.getSidFromCookie(request);
+        Map<String, String> sessionMap = redisClient.getMap(sid);
+        String username =  sessionMap.get("username");
+        if (username == null)
+            return new ModelAndView("login");
+        else {
+            ModelAndView ret = new ModelAndView("updateprod_admin");
+            ret.addObject("username", sessionMap.get("username"));
+
+            ProductParam productParam = productsService.getProductParam(id);
+            ret.addObject("productParam", productParam);
+
+
+            return ret;
+        }
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+    public ModelAndView updateProdPagePost(@PathVariable("id") Integer id,
+                                           HttpServletRequest request, HttpServletResponse response,
+                                           @RequestParam("prod_name") String prod_name,
+                                           @RequestParam("prod_introduction") String prod_introduction,
+                                           @RequestParam("imgs") MultipartFile[] files) {
+        ModelAndView ret = new ModelAndView();
+        Map<String, Object> params = new HashMap<String, Object>();
+        String path = request.getServletContext().getRealPath("");
+        String sid = ToolClass.getSidFromCookie(request);
+
+        Map<String, String> sessionMap = redisClient.getMap(sid);
+        ret.addObject("username", sessionMap.get("username"));
+
+        if (prod_name.equals("")) {
+            ret.setViewName("addprod_admin");
+            logger.info("add prod fail. prod_name is \"\"");
+            return ret;
+        }
+
+        params.put("id", id);
+        params.put("prod_name", prod_name);
+        params.put("prod_introduction", prod_introduction);
+        String image_urls = "";
+
+        if(files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String filename = file.getOriginalFilename();
+                    filename = ToolClass.getImgFilename(filename);
+                    PutObjectResult putObjectResult = null;
+
+                    try {
+                        File f = new File(path + "image/" + filename);
+                        file.transferTo(f);
+                        putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
+                        f.delete();
+                    } catch (Exception e) {
+                        logger.error("File save err. prod_name: " + prod_name, e);
+                    }
+
+                    if (putObjectResult == null) {
+                        logger.error("File upload fail. " + filename);
+                        if (image_urls.equals("")) {
+                            image_urls += "/image/" + filename;
+                        } else {
+                            image_urls += ";/image/" + filename;
+                        }
+                    } else {
+                        if (image_urls.equals("")) {
+                            image_urls += "http://mzx-img.sinacloud.net/" + filename;
+                        } else {
+                            image_urls += ";http://mzx-img.sinacloud.net/" + filename;
+                        }
+                    }
+                }
+            }
+        }
+
+        params.put("image_urls", image_urls);
+
+        adminService.updateProd(params);
+
+        logger.info("update prod. prod_name: " + prod_name);
+        ret.setViewName("put_success");
+        return ret;
+    }
+
+    @RequestMapping("/setcover/{id}")
+    public String setCover(@PathVariable("id") Integer id, @RequestParam("cover_img") String cover_img) {
+
+        int status = adminService.setCover(id, cover_img);
+        if (status < 1)
+            logger.error("Admin setCover fail. ID: " + id + ", status: " + status);
+        else
+            logger.info("Admin setCover prod. ID: " + id + ", status: " + status);
+        return "redirect:/admin/update/" + String.valueOf(id);
+    }
+
+    @RequestMapping("/deleteimg/{id}/{img}")
+    public String delImgInProd(@PathVariable("id") Integer id, @PathVariable("img") Integer img) {
+
+        int status = adminService.delProdImg(id, img);
+        if (status < 1)
+            logger.error("Admin delImgInProd fail. ID: " + id + ", status: " + status);
+        else
+            logger.info("Admin delImgInProd prod. ID: " + id + ", status: " + status);
+        return "redirect:/admin/update/" + String.valueOf(id);
     }
 
 }

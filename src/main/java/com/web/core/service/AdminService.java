@@ -1,12 +1,11 @@
 package com.web.core.service;
 
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.dao.IUsersTableDao;
+import com.web.core.entity.ProductsTable;
 import com.web.core.entity.UsersTable;
 import com.web.core.tool.MQ.MQProducer;
 import com.web.core.tool.ToolClass;
@@ -84,6 +83,27 @@ public class AdminService {
         return ret;
     }
 
+    public int updateProd(Map<String, Object> params) {
+        int ret = 0;
+        try {
+            ProductsTable productsTable = iProductsTableDao.selectDelOneById((Integer)params.get("id"));
+            String originalImgUrls = productsTable.getImage_urls();
+            String imgUrls = "";
+            if (originalImgUrls.equals(""))
+                imgUrls = (String)params.get("image_urls");
+            else
+                imgUrls = originalImgUrls + ";" + (String)params.get("image_urls");
+            params.put("image_urls", imgUrls);
+
+            ret = iProductsTableDao.updateProd(params);
+
+//            ret = iProductsTableDao.(params);
+        } catch (Exception e) {
+            logger.error("Error: updateProd; iProductsTableDao", e);
+        }
+        return ret;
+    }
+
     public int delOneProd(Integer id) {
         int ret = 0;
         try {
@@ -91,11 +111,57 @@ public class AdminService {
             HashMap message = new HashMap();
             message.put("del_id", id);
             mqDelProducer.sendMessage(message);
-//            System.out.println("Message Number " + id + " sent.");
 
         } catch (Exception e) {
             logger.error("Error: delOneProd; iProductsTableDao.delProdById()", e);
         }
         return ret;
     }
+
+    public int setCover(Integer id, String cover_img) {
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put("id", id);
+        params.put("cover_image_url", cover_img);
+
+        int ret = 0;
+        try {
+            ret = iProductsTableDao.setCover(params);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return ret;
+    }
+
+    // img文件删除, imgcover修改..
+    public int delProdImg(Integer id, Integer img) {
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put("id", id);
+
+        int ret = 0;
+        try {
+            ProductsTable productsTable = iProductsTableDao.selectDelOneById(id);
+            String originalImgUrls = productsTable.getImage_urls();
+            if (originalImgUrls.equals(""))
+                return 0;
+
+            String[] imgUrlArray = originalImgUrls.split(";");
+            String imgUrls = "";
+            for (int i=0; i<imgUrlArray.length; i++) {
+                if (i != img)
+                    if (imgUrls.equals(""))
+                        imgUrls += imgUrlArray[i];
+                    else
+                        imgUrls += ";" + imgUrlArray[i];
+            }
+
+            params.put("image_urls", imgUrls);
+            ret = iProductsTableDao.updateImg(params);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return ret;
+    }
+
 }
