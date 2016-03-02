@@ -46,6 +46,9 @@ public class SCSTool {
     }
 
     public static boolean delObject(String filename) {
+        if (filename.equals(""))
+            return false;
+
         try {
             conn.deleteObject(bucketName, filename);
         } catch (Exception e) {

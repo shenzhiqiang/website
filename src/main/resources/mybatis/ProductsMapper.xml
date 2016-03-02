@@ -92,6 +92,9 @@
     <update id="updateImg" parameterType="map" >
         UPDATE ProductsTable
         SET image_urls = #{image_urls}
+        <if test="cover_image_url != null">
+        , cover_image_url = '${cover_image_url}'
+        </if>
         WHERE id = #{id}
     </update>
 

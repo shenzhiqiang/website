@@ -8,6 +8,7 @@ import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.ProductsTable;
 import com.web.core.entity.UsersTable;
 import com.web.core.tool.MQ.MQProducer;
+import com.web.core.tool.SCSTool;
 import com.web.core.tool.ToolClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -157,11 +158,27 @@ public class AdminService {
             }
 
             params.put("image_urls", imgUrls);
+            if (imgUrlArray[img].equals(productsTable.getCover_image_url()))
+                params.put("cover_image_url", "");
+
             ret = iProductsTableDao.updateImg(params);
+
+            delImg(imgUrlArray[img]);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return ret;
+    }
+
+    public boolean delImg(String imgUrl) {
+        String[] imgSplit = imgUrl.split("/");
+        if (imgSplit.length > 0) {
+            String filename = imgSplit[imgSplit.length - 1];
+            if (!SCSTool.delObject(filename)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
