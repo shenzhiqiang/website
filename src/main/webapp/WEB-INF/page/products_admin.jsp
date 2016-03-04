@@ -143,6 +143,9 @@
           <%--</a>--%>
             <h1>${item.prod_name}</h1>
             <p>${item.prod_introduction}</p>
+            <c:if test="${item.is_top > 0}"><a href="${domain}/admin/untop/${item.id}">Un Top</a></c:if>
+            <c:if test="${item.is_top == 0}"><a href="${domain}/admin/settop/${item.id}">Top</a></c:if>
+
             <a href="${domain}/admin/update/${item.id}">Edit</a>
             <a href="${domain}/admin/delete/${item.id}">Del</a>
       </li>

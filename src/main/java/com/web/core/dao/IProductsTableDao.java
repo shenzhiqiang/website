@@ -32,4 +32,6 @@ public interface IProductsTableDao {
     int updateProd(Map<String, Object> params);
     int setCover(Map<String, Object> params);
     int updateImg(Map<String, Object> params);
+
+    int updateIsTop(int status, Integer id);
 }

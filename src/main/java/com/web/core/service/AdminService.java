@@ -7,6 +7,7 @@ import com.web.core.dao.IProductsTableDao;
 import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.ProductsTable;
 import com.web.core.entity.UsersTable;
+import com.web.core.index.TopIndex;
 import com.web.core.tool.MQ.MQProducer;
 import com.web.core.tool.SCSTool;
 import com.web.core.tool.ToolClass;
@@ -30,6 +31,8 @@ public class AdminService {
     IProductsTableDao iProductsTableDao;
     @Resource
     IUsersTableDao iUsersTableDao;
+    @Resource
+    TopIndex topIndex;
 
     public UsersTable getUserByName(String name) {
         UsersTable user = null;
@@ -134,7 +137,6 @@ public class AdminService {
         return ret;
     }
 
-    // img文件删除, imgcover修改..
     public int delProdImg(Integer id, Integer img) {
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -179,6 +181,22 @@ public class AdminService {
             }
         }
         return true;
+    }
+
+    public int updateTop(int status, Integer id) {
+        int ret = 0;
+        try {
+            ret = iProductsTableDao.updateIsTop(status, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        if (status > 0)
+            topIndex.addProd(id);
+        else if (status == 0)
+            topIndex.delProd(id);
+
+        return ret;
     }
 
 }

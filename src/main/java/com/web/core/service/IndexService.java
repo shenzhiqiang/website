@@ -31,11 +31,10 @@ public class IndexService {
         List<ProductsTable> prod_list = null;
         try {
 //            prod_list = iProductsTableDao.getTopProd(10);
-            prod_list = topIndex.getTopIndex();
-            if (prod_list == null) {
+            if (!topIndex.isBuild()) {
                 topIndex.buildIndex();
-                prod_list = topIndex.getTopIndex();
             }
+            prod_list = topIndex.getTopIndex();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

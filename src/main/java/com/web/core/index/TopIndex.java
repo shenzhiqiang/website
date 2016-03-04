@@ -39,6 +39,13 @@ public class TopIndex {
         return true;
     }
 
+    public boolean isBuild() {
+        if (topIndex != null)
+            return true;
+        else
+            return false;
+    }
+
     public List<ProductsTable> getTopIndex() {
         return topIndex;
     }
@@ -51,5 +58,13 @@ public class TopIndex {
             }
         }
         return resIndex;
+    }
+
+    public boolean addProd(Integer id) {
+        return buildIndex();
+    }
+
+    public boolean delProd(Integer id) {
+        return buildIndex();
     }
 }

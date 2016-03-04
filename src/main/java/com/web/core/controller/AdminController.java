@@ -370,4 +370,18 @@ public class AdminController {
         return "redirect:/admin/update/" + String.valueOf(id);
     }
 
+    // Top
+    @RequestMapping("/settop/{id}")
+    public String setTop(@PathVariable("id") Integer id) {
+        adminService.updateTop(1, id);
+
+        return "redirect:/admin/products";
+    }
+
+    @RequestMapping("/untop/{id}")
+    public String unTop(@PathVariable("id") Integer id) {
+        adminService.updateTop(0, id);
+
+        return "redirect:/admin/products";
+    }
 }
