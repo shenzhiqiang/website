@@ -82,16 +82,23 @@
                                             <!--location="classpath:dbconfig.properties" />-->
        <!--</beans>-->
 
-    <bean id="mqDelProducer" class="com.web.core.tool.MQ.MQProducer">
-        <constructor-arg name="endPointName" value="${rmq.delQueueName}"/>
+<!--del rmq-->
+    <bean id="delProdConsumer" class="com.web.core.tool.MQ.MQExConsumerDelProd">
+        <constructor-arg name="endpointName" value=""/>
+        <constructor-arg name="bindKey" value="${rmq.delProdBindKey}"/>
+        <constructor-arg name="exName" value="${rmq.delExName}"/>
+        <constructor-arg name="exType" value="${rmq.delExType}"/>
         <constructor-arg name="host" value="${rmq.host}"/>
         <constructor-arg name="port" value="${rmq.port}"/>
     </bean>
-    <bean id="delImgconsumer" class="com.web.core.tool.MQ.MQConsumerDelImg">
-        <constructor-arg name="endPointName" value="${rmq.delQueueName}"/>
+    <bean id="mqDelProducer" class="com.web.core.tool.MQ.MQDelProducer">
+        <constructor-arg name="exName" value="${rmq.delExName}"/>
+        <constructor-arg name="exType" value="${rmq.delExType}"/>
         <constructor-arg name="host" value="${rmq.host}"/>
         <constructor-arg name="port" value="${rmq.port}"/>
     </bean>
+
+
     <bean id="topIndex" class="com.web.core.index.TopIndex"></bean>
 
     <!--redis-->

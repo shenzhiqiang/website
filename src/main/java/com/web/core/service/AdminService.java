@@ -8,7 +8,7 @@ import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.ProductsTable;
 import com.web.core.entity.UsersTable;
 import com.web.core.index.TopIndex;
-import com.web.core.tool.MQ.MQProducer;
+import com.web.core.tool.MQ.MQDelProducer;
 import com.web.core.tool.SCSTool;
 import com.web.core.tool.ToolClass;
 import org.apache.commons.logging.Log;
@@ -26,7 +26,7 @@ public class AdminService {
     private static Log logger = LogFactory.getLog(AdminService.class);
 
     @Resource
-    MQProducer mqDelProducer;
+    MQDelProducer mqDelProducer;
     @Resource
     IProductsTableDao iProductsTableDao;
     @Resource
@@ -114,7 +114,7 @@ public class AdminService {
             ret = iProductsTableDao.delProdById(id);
             HashMap message = new HashMap();
             message.put("del_id", id);
-            mqDelProducer.sendMessage(message);
+            mqDelProducer.sendMessage(message, "del_prod");
 
         } catch (Exception e) {
             logger.error("Error: delOneProd; iProductsTableDao.delProdById()", e);

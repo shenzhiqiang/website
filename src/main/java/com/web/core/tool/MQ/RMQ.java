@@ -18,6 +18,8 @@ public abstract class RMQ{
     protected Channel channel;
     protected Connection connection;
     protected String endPointName;
+    protected String exName;
+    protected String exType;
 
     public RMQ(String endpointName, String host, int port) throws IOException{
         this.endPointName = endpointName;
@@ -40,6 +42,28 @@ public abstract class RMQ{
         channel.queueDeclare(endpointName, false, false, false, null);
     }
 
+    public RMQ(String endpointName, String bindKey, String exName, String exType, String host, int port) throws IOException{
+        this.endPointName = endpointName;
+        this.exName = exName;
+        this.exType = exType;
+
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(host);
+        factory.setPort(port);
+        connection = factory.newConnection();
+        channel = connection.createChannel();
+
+        channel.exchangeDeclare(exName, exType);
+
+        if (!bindKey.equals("")) {
+            if (!endpointName.equals(""))
+                channel.queueDeclare(endpointName, false, false, false, null);
+            else
+                this.endPointName = channel.queueDeclare().getQueue();
+
+            channel.queueBind(endpointName, exName, bindKey);
+        }
+    }
 
     /**
      * 关闭channel和connection。并非必须，因为隐含是自动调用的。

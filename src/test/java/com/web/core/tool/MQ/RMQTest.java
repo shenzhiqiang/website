@@ -20,17 +20,15 @@ public class RMQTest extends TestCase {
 
     @Test
     public void TEST() throws Exception{
-        MQConsumerDelImg consumer = new MQConsumerDelImg("queue", "localhost", 5672);
-        Thread consumerThread = new Thread(consumer);
-        consumerThread.start();
-
-        MQProducer producer = new MQProducer("queue", "localhost", 5672);
-
-        for (int i = 0; i < 5; i++) {
-            HashMap message = new HashMap();
-            message.put("message number", i);
-            producer.sendMessage(message);
-            System.out.println("Message Number "+ i +" sent.");
-        }
+//        new MQExConsumerDelProd("", "key", "exname", "direct", "localhost", 5672);
+//
+//        MQDelProducer producer = new MQDelProducer("exname", "direct", "localhost", 5672);
+//
+//        for (int i = 0; i < 5; i++) {
+//            HashMap message = new HashMap();
+//            message.put("del_id", i);
+//            producer.sendMessage(message, "key");
+//            System.out.println("del_id: "+ i +" sent.");
+//        }
     }
 }

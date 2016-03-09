@@ -1,11 +1,6 @@
 package com.web.core.tool.MQ;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-
-import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.ShutdownSignalException;
@@ -17,23 +12,26 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.util.SerializationUtils;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by shenzhiqiang on 16/2/18.
+ * Created by shenzhiqiang on 16/3/10.
  */
-public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
-    private static Log logger = LogFactory.getLog(MQConsumerDelImg.class);
+public class MQExConsumerDelProd extends RMQ implements Runnable, Consumer {
+    private static Log logger = LogFactory.getLog(MQConsumerDelProd.class);
 
     @Resource
     IProductsTableDao iProductsTableDao;
     @Resource
-    MQProducer mqDelProducer;
+    MQDelProducer mqDelProducer;
 
     boolean ack = false; // message acknowledgments
 
 
-    public MQConsumerDelImg(String endPointName, String host, int port) throws IOException{
-        super(endPointName, host, port);
+    public MQExConsumerDelProd(String endpointName, String bindKey, String exName, String exType, String host, int port) throws IOException {
+        super(endpointName, bindKey, exName, exType, host, port);
         Thread consumerThread = new Thread(this);
         consumerThread.start();
     }
@@ -58,7 +56,7 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
      * Called when new message is available.
      */
     public void handleDelivery(String consumerTag, Envelope env,
-                               BasicProperties props, byte[] body) throws IOException {
+                               AMQP.BasicProperties props, byte[] body) throws IOException {
         ProductsTable prod = null;
         Map map = null;
 
@@ -103,7 +101,7 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
             try{
                 HashMap message = new HashMap();
                 message.put("del_id", (Integer) map.get("del_id"));
-                mqDelProducer.sendMessage(message);
+                mqDelProducer.sendMessage(message, "del_prod");
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -116,7 +114,7 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
                 try{
                     HashMap message = new HashMap();
                     message.put("del_id", (Integer) map.get("del_id"));
-                    mqDelProducer.sendMessage(message);
+                    mqDelProducer.sendMessage(message, "del_prod");
                 } catch (Exception ex) {
                     logger.error(e.getMessage(), ex);
                 }
