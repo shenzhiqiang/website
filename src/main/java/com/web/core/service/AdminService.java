@@ -165,22 +165,14 @@ public class AdminService {
 
             ret = iProductsTableDao.updateImg(params);
 
-            delImg(imgUrlArray[img]);
+            HashMap msg = new HashMap();
+            msg.put("del_url", imgUrlArray[img]);
+            mqDelProducer.sendMessage(msg, "del_img_key");
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return ret;
-    }
-
-    public boolean delImg(String imgUrl) {
-        String[] imgSplit = imgUrl.split("/");
-        if (imgSplit.length > 0) {
-            String filename = imgSplit[imgSplit.length - 1];
-            if (!SCSTool.delObject(filename)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public int updateTop(int status, Integer id) {

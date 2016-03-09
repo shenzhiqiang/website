@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by shenzhiqiang on 16/3/10.
  */
 public class MQExConsumerDelProd extends RMQ implements Runnable, Consumer {
-    private static Log logger = LogFactory.getLog(MQConsumerDelProd.class);
+    private static Log logger = LogFactory.getLog(MQExConsumerDelProd.class);
 
     @Resource
     IProductsTableDao iProductsTableDao;
@@ -49,7 +49,7 @@ public class MQExConsumerDelProd extends RMQ implements Runnable, Consumer {
      * Called when consumer is registered.
      */
     public void handleConsumeOk(String consumerTag) {
-        System.out.println("Consumer " + consumerTag + " registered");
+        System.out.println("Consumer ProdDel" + consumerTag + " registered");
     }
 
     /**
@@ -120,7 +120,7 @@ public class MQExConsumerDelProd extends RMQ implements Runnable, Consumer {
                 }
                 logger.error(e.getMessage(), e);
             }
-        logger.info("RMQ Del ID: " + map.get("del_id"));
+        logger.info("RMQ Prod Del ID: " + map.get("del_id"));
         channel.basicAck(env.getDeliveryTag(), false);
     }
 

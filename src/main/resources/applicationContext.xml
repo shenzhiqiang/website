@@ -91,6 +91,14 @@
         <constructor-arg name="host" value="${rmq.host}"/>
         <constructor-arg name="port" value="${rmq.port}"/>
     </bean>
+    <bean id="delImgConsumer" class="com.web.core.tool.MQ.MQConsumerDelImg">
+        <constructor-arg name="endpointName" value=""/>
+        <constructor-arg name="bindKey" value="${rmq.delImgBindKey}"/>
+        <constructor-arg name="exName" value="${rmq.delExName}"/>
+        <constructor-arg name="exType" value="${rmq.delExType}"/>
+        <constructor-arg name="host" value="${rmq.host}"/>
+        <constructor-arg name="port" value="${rmq.port}"/>
+    </bean>
     <bean id="mqDelProducer" class="com.web.core.tool.MQ.MQDelProducer">
         <constructor-arg name="exName" value="${rmq.delExName}"/>
         <constructor-arg name="exType" value="${rmq.delExType}"/>
