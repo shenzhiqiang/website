@@ -26,8 +26,9 @@
   <link rel="stylesheet" href="${domain}/css/reset.css">
   <link rel="stylesheet" href="${domain}/css/style.css">
   <link rel="stylesheet" href="${domain}/css/style-responsive.css">
-  
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="${domain}/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -146,8 +147,8 @@
             <c:if test="${item.is_top > 0}"><a href="${domain}/admin/untop/${item.id}">Un Top</a></c:if>
             <c:if test="${item.is_top == 0}"><a href="${domain}/admin/settop/${item.id}">Top</a></c:if>
 
-            <a href="${domain}/admin/update/${item.id}">Edit</a>
-            <a href="${domain}/admin/delete/${item.id}">Del</a>
+         <a class="btn btn-mini" href="${domain}/admin/update/${item.id}">Edit</a>
+         <a class="btn btn-mini" href="${domain}/admin/delete/${item.id}">Del</a>
       </li>
     </c:forEach>
 
@@ -212,6 +213,7 @@
   <script src="${domain}/js/jquery.jkit.1.2.16.min.js"></script>
 
   <script src="${domain}/js/script.js" type="text/javascript"></script>
+<script src="${domain}/js/bootstrap.min.js"></script>
   
 	<script>
     $('#button, #buttons').on('click', function() {

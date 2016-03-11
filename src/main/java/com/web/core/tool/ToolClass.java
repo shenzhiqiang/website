@@ -2,7 +2,9 @@ package com.web.core.tool;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.MessageDigest;
+import java.util.List;
 
 /**
  * Created by shenzhiqiang on 16/2/7.
@@ -47,4 +49,12 @@ public class ToolClass {
         return "";
     }
 
+    public static boolean isResponseSetCookie(HttpServletResponse response) {
+        String headerSid = response.getHeader("Set-Cookie");
+
+        if (headerSid == null) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -24,9 +24,15 @@ public class SessionIdInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
+        if (ToolClass.isResponseSetCookie(response)) {
+            return true;
+        }
+
         String newSid = UUID.randomUUID().toString().replace("-","");
         Cookie cookie = new Cookie("sid", newSid);
-        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 60 * 12);
         response.addCookie(cookie);
 
         return true;
