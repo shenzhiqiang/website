@@ -26,8 +26,9 @@
     <link rel="stylesheet" href="${domain}/css/style.css">
     <link rel="stylesheet" href="${domain}/css/style-responsive.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
-  <!--[if lt IE 9]>
+    <link href="${domain}/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
   
@@ -59,37 +60,79 @@
 
 <%--</div>--%>
 
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <!-- 定义个内部框架表现的基调,位置大小背景等 -->
+  <div class="navbar-inner">
+    <!-- 定义实现块的css,具体内容都包含在container中 -->
+    <div class="container">
+      <!-- 定义响应时用的按钮元素,界面大小改变时会用到 -->
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <!-- 定义品牌链接导航 -->
+      <!-- 不知道为什么这么定义 -->
+      <a class="brand" href="${domain}">Home</a>
+      <!-- 定义了个响应触发点 -->
+      <div class="nav-collapse collapse">
+        <!-- 定义导航列表 -->
+        <ul class="nav">
+          <!-- 首页链接高亮 -->
+          <li class=""> <a href="${domain}/products">Projects</a> </li>
+          <li class=""> <a href="${domain}/about_us">About me</a> </li>
+
+          <c:if test="${username==null}">
+            <li><a href="${domain}/login">Login</a></li>
+          </c:if>
+          <c:if test="${username!=null}">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">${username} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="divider"></li>
+                <li class="nav-header">Admin</li>
+                <li><a href="${domain}/admin/passwd">Passwd</a></li>
+                <li><a href="${domain}/admin/products">Projects</a></li>
+                <li><a href="${domain}/admin/add">Add One</a></li>
+                <li><a href="${domain}/logout">Logout</a></li>
+
+              </ul>
+            </li>
+          </c:if>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
   <!--Header-->
-<header class="boxed" id="header-white">
+<header >
 
-  <div class="header-margin">
+  <%--<div class="header-margin">--%>
 
-    <div class="logo"><a class="ajax-link" href="${domain}">HOME</a></div>
+    <%--<div class="logo"><a class="ajax-link" href="${domain}">HOME</a></div>--%>
 
-    <ul class="header-nav">
-      <li><a href="${domain}/products">Products</a>
+    <%--<ul class="header-nav">--%>
+      <%--<li><a href="${domain}/products">Products</a>--%>
+        <%--&lt;%&ndash;<ul>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<li><a class="ajax-link" href="${domain}/projects">Projects</a></li>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<li><a class="ajax-link" href="single.html">Single project</a></li>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<li><a class="ajax-link" href="single-full.html">Single project fullscreen</a></li>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
+
+      <%--</li>--%>
+
+      <%--<li><a href="${domain}/about_us">About me</a></li>--%>
+      <%--<c:if test="${username==null}">--%>
+        <%--<li><a href="${domain}/login">Login</a></li>--%>
+      <%--</c:if>--%>
+      <%--<c:if test="${username!=null}">--%>
+        <%--<li><a href="${domain}">${username}</a></li>--%>
         <%--<ul>--%>
-        <%--<li><a class="ajax-link" href="${domain}/projects">Projects</a></li>--%>
-        <%--<li><a class="ajax-link" href="single.html">Single project</a></li>--%>
-        <%--<li><a class="ajax-link" href="single-full.html">Single project fullscreen</a></li>--%>
+          <%--<li><a href="${domain}/logout">Logout</a></li>--%>
         <%--</ul>--%>
+      <%--</c:if>--%>
+    <%--</ul>--%>
 
-      </li>
-
-      <li><a href="${domain}/about_us">About me</a></li>
-      <c:if test="${username==null}">
-        <li><a href="${domain}/login">Login</a></li>
-      </c:if>
-      <c:if test="${username!=null}">
-        <li><a href="${domain}">${username}</a></li>
-        <ul>
-          <li><a href="${domain}/logout">Logout</a></li>
-        </ul>
-      </c:if>
-    </ul>
-
-  </div>
+  <%--</div>--%>
 
 </header>
 
@@ -129,7 +172,7 @@
           <form action="${domain}/login" method="post">
             <label>Username: </label><input type="text" name="username"/><br/>
             <label>Password: </label><input type="password" name="passwd"/><br/>
-            <input type="submit" value="Login"/>
+            <input class="btn btn-primary" type="submit" value="Login"/>
           </form>
           </div>
 
@@ -178,6 +221,7 @@
   <script src="${domain}/js/jquery.jkit.1.2.16.min.js"></script>
 
   <script src="${domain}/js/script.js" type="text/javascript"></script>
+<script src="${domain}/js/bootstrap.min.js"></script>
 
   <script>
     $('#button, #buttons').on('click', function() {
