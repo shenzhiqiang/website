@@ -1,8 +1,10 @@
 package com.web.core.service;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.util.*;
 
+import com.sina.cloudstorage.services.scs.model.PutObjectResult;
 import com.web.core.dao.IProductsTableDao;
 import com.web.core.dao.IUsersTableDao;
 import com.web.core.entity.ProductsTable;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import com.web.core.tool.ToolClass.*;
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * Created by shenzhiqiang on 16/2/2.
  */
@@ -90,13 +94,13 @@ public class AdminService {
     public int updateProd(Map<String, Object> params) {
         int ret = 0;
         try {
-            ProductsTable productsTable = iProductsTableDao.selectDelOneById((Integer)params.get("id"));
+            ProductsTable productsTable = iProductsTableDao.selectDelOneById((Integer) params.get("id"));
             String originalImgUrls = productsTable.getImage_urls();
             String imgUrls = "";
             if (originalImgUrls.equals(""))
-                imgUrls = (String)params.get("image_urls");
+                imgUrls = (String) params.get("image_urls");
             else
-                imgUrls = originalImgUrls + ";" + (String)params.get("image_urls");
+                imgUrls = originalImgUrls + ";" + (String) params.get("image_urls");
             params.put("image_urls", imgUrls);
 
             ret = iProductsTableDao.updateProd(params);
@@ -151,7 +155,7 @@ public class AdminService {
 
             String[] imgUrlArray = originalImgUrls.split(";");
             String imgUrls = "";
-            for (int i=0; i<imgUrlArray.length; i++) {
+            for (int i = 0; i < imgUrlArray.length; i++) {
                 if (i != img)
                     if (imgUrls.equals(""))
                         imgUrls += imgUrlArray[i];
@@ -191,4 +195,76 @@ public class AdminService {
         return ret;
     }
 
+    public void addImgs(MultipartFile[] files, Map<String, Object> params, String path) {
+        String image_urls = "";
+        String cover_image_url = "";
+
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String filename = file.getOriginalFilename();
+                    filename = ToolClass.getImgFilename(filename);
+                    PutObjectResult putObjectResult = null;
+
+                    try {
+                        File f = new File(path + "image/" + filename);
+                        file.transferTo(f);
+                        putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
+                        f.delete();
+                    } catch (Exception e) {
+                        logger.error("File save err. ", e);
+                    }
+
+                    if (putObjectResult == null) {
+                        logger.error("File upload fail. " + filename);
+                    } else {
+                        if (image_urls.equals("")) {
+                            image_urls += "http://mzx-img.sinacloud.net/" + filename;
+                        } else {
+                            image_urls += ";http://mzx-img.sinacloud.net/" + filename;
+                        }
+                        if (cover_image_url.equals("")) {
+                            cover_image_url = "http://mzx-img.sinacloud.net/" + filename;
+                        }
+                    }
+                }
+            }
+        }
+        params.put("image_urls", image_urls);
+        params.put("cover_image_url", cover_image_url);
+    }
+
+    public void updateImgs(MultipartFile[] files, Map<String, Object> params, String path) {
+        String image_urls = "";
+
+        if(files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String filename = file.getOriginalFilename();
+                    filename = ToolClass.getImgFilename(filename);
+                    PutObjectResult putObjectResult = null;
+
+                    try {
+                        File f = new File(path + "image/" + filename);
+                        file.transferTo(f);
+                        putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
+                        f.delete();
+                    } catch (Exception e) {
+                        logger.error("File save err. ", e);
+                    }
+
+                    if (putObjectResult == null) {
+                        logger.error("File upload fail. " + filename);
+                    } else {
+                        if (image_urls.equals("")) {
+                            image_urls += "http://mzx-img.sinacloud.net/" + filename;
+                        } else {
+                            image_urls += ";http://mzx-img.sinacloud.net/" + filename;
+                        }
+                    }
+                }
+            }
+        }
+        params.put("image_urls", image_urls);
+    }
 }

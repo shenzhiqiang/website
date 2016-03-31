@@ -207,51 +207,8 @@ public class AdminController {
 
         params.put("prod_name", prod_name);
         params.put("prod_introduction", prod_introduction);
-        String image_urls = "";
-        String cover_image_url = "";
 
-        if(files != null && files.length > 0) {
-            for (MultipartFile file : files) {
-                if (!file.isEmpty()) {
-                    String filename = file.getOriginalFilename();
-                    filename = ToolClass.getImgFilename(filename);
-                    PutObjectResult putObjectResult = null;
-
-                    try {
-                        File f = new File(path + "image/" + filename);
-                        file.transferTo(f);
-                        putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
-                        f.delete();
-                    } catch (Exception e) {
-                        logger.error("File save err. prod_name: " + prod_name, e);
-                    }
-
-                    if (putObjectResult == null) {
-                        logger.error("File upload fail. " + filename);
-                        if (image_urls.equals("")) {
-                            image_urls += "/image/" + filename;
-                        } else {
-                            image_urls += ";/image/" + filename;
-                        }
-                        if (cover_image_url.equals("")) {
-                            cover_image_url = "/image/" + filename;
-                        }
-                    } else {
-                        if (image_urls.equals("")) {
-                            image_urls += "http://mzx-img.sinacloud.net/" + filename;
-                        } else {
-                            image_urls += ";http://mzx-img.sinacloud.net/" + filename;
-                        }
-                        if (cover_image_url.equals("")) {
-                            cover_image_url = "http://mzx-img.sinacloud.net/" + filename;
-                        }
-                    }
-                }
-            }
-        }
-
-        params.put("image_urls", image_urls);
-        params.put("cover_image_url", cover_image_url);
+        adminService.addImgs(files, params, path);
 
         adminService.addProd(params);
 
@@ -305,41 +262,7 @@ public class AdminController {
         params.put("prod_introduction", prod_introduction);
         String image_urls = "";
 
-        if(files != null && files.length > 0) {
-            for (MultipartFile file : files) {
-                if (!file.isEmpty()) {
-                    String filename = file.getOriginalFilename();
-                    filename = ToolClass.getImgFilename(filename);
-                    PutObjectResult putObjectResult = null;
-
-                    try {
-                        File f = new File(path + "image/" + filename);
-                        file.transferTo(f);
-                        putObjectResult = SCSTool.putObject(filename, path + "image/" + filename);
-                        f.delete();
-                    } catch (Exception e) {
-                        logger.error("File save err. prod_name: " + prod_name, e);
-                    }
-
-                    if (putObjectResult == null) {
-                        logger.error("File upload fail. " + filename);
-                        if (image_urls.equals("")) {
-                            image_urls += "/image/" + filename;
-                        } else {
-                            image_urls += ";/image/" + filename;
-                        }
-                    } else {
-                        if (image_urls.equals("")) {
-                            image_urls += "http://mzx-img.sinacloud.net/" + filename;
-                        } else {
-                            image_urls += ";http://mzx-img.sinacloud.net/" + filename;
-                        }
-                    }
-                }
-            }
-        }
-
-        params.put("image_urls", image_urls);
+        adminService.updateImgs(files, params, path);
 
         adminService.updateProd(params);
 
