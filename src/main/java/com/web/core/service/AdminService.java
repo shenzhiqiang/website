@@ -82,7 +82,7 @@ public class AdminService {
     }
 
     public int addProd(Map<String, Object> params) {
-        int ret = 0;
+        int ret = -1;
         try {
             ret = iProductsTableDao.addProdSimple(params);
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class AdminService {
     }
 
     public int updateProd(Map<String, Object> params) {
-        int ret = 0;
+        int ret = -1;
         try {
             ProductsTable productsTable = iProductsTableDao.selectDelOneById((Integer) params.get("id"));
             String originalImgUrls = productsTable.getImage_urls();
@@ -178,6 +178,20 @@ public class AdminService {
         }
         return ret;
     }
+
+    public void delImgs(String imgsUrl) {
+        HashMap msg = new HashMap();
+        String[] imgUrlArray = imgsUrl.split(";");
+        try {
+            for (int i = 0; i < imgUrlArray.length; i++) {
+                msg.put("del_url", imgUrlArray[i]);
+                mqDelProducer.sendMessage(msg, "del_img_key");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
 
     public int updateTop(int status, Integer id) {
         int ret = 0;

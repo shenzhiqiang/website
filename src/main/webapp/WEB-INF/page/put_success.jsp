@@ -13,7 +13,7 @@
 <head>
 
   <meta charset="utf-8">
-  <title>SUCCESS</title>
+  <title>RESULT</title>
   <%--<meta name="description" content="Contact page with contact form and simplicty information with e-mail and address. Contact form with check input and textarea. ">--%>
   <%--<meta name="keywords" content="thomsoon, simplicity, theme, html5, contact, form">--%>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -145,8 +145,13 @@
         <div class="text-intro">
 
           <h1>${showtext}</h1>
-          <p>plz click <a href="${domain}">here</a></p>
-          
+          <c:if test="${id==null}">
+            <p>plz click <a href="${domain}">here</a></p>
+          </c:if>
+          <c:if test="${id!=null}">
+            <p>plz click <a href="${domain}/product/${id}">here</a></p>
+          </c:if>
+
           
         </div>
         

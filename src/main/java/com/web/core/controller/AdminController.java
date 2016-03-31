@@ -210,10 +210,18 @@ public class AdminController {
 
         adminService.addImgs(files, params, path);
 
-        adminService.addProd(params);
+        int id = adminService.addProd(params);
+        if (id == -1) {
+            adminService.delImgs((String) params.get("image_urls"));
+            ret.setViewName("addprod_admin");
+            logger.info("add prod fail. fail to storage in db.");
+            return ret;
+        }
 
         logger.info("add prod success. prod_name: " + prod_name);
         ret.setViewName("put_success");
+        ret.addObject("id", id);
+
         return ret;
     }
 
@@ -252,22 +260,33 @@ public class AdminController {
         ret.addObject("username", sessionMap.get("username"));
 
         if (prod_name.equals("")) {
-            ret.setViewName("addprod_admin");
-            logger.info("add prod fail. prod_name is \"\"");
+            ret.setViewName("put_success");
+            ret.addObject("id", id);
+            ret.addObject("showtext", "Null prod_name.");
+            logger.info("update prod fail. prod_name is \"\"");
             return ret;
         }
 
         params.put("id", id);
         params.put("prod_name", prod_name);
         params.put("prod_introduction", prod_introduction);
-        String image_urls = "";
 
         adminService.updateImgs(files, params, path);
 
-        adminService.updateProd(params);
+        int updateStatus = adminService.updateProd(params);
+        if (updateStatus == -1) {
+            adminService.delImgs((String)params.get("image_urls"));
+            ret.setViewName("put_success");
+            ret.addObject("id", id);
+            ret.addObject("showtext", "Fail to update.");
+            logger.info("update prod fail. fail to storage in db.");
+            return ret;
+        }
 
         logger.info("update prod. prod_name: " + prod_name);
         ret.setViewName("put_success");
+        ret.addObject("id", id);
+
         return ret;
     }
 
