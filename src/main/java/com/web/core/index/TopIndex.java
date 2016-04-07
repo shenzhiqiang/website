@@ -36,6 +36,7 @@ public class TopIndex {
             logger.error(e.getMessage(), e);
             return false;
         }
+        logger.info("build top index. buildIndex()");
         return true;
     }
 

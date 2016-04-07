@@ -106,8 +106,11 @@
         <constructor-arg name="port" value="${rmq.port}"/>
     </bean>
 
-
+    <!--topindex-->
     <bean id="topIndex" class="com.web.core.index.TopIndex"></bean>
+    <task:scheduled-tasks>
+        <task:scheduled ref="topIndex" method="buildIndex" cron="0 */1 * * * ?"/>
+    </task:scheduled-tasks>
 
     <!--redis-->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
