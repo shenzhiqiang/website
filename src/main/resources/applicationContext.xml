@@ -90,6 +90,8 @@
         <constructor-arg name="exType" value="${rmq.delExType}"/>
         <constructor-arg name="host" value="${rmq.host}"/>
         <constructor-arg name="port" value="${rmq.port}"/>
+        <constructor-arg name="userName" value="${rmq.username}"/>
+        <constructor-arg name="password" value="${rmq.passwd}"/>
     </bean>
     <bean id="delImgConsumer" class="com.web.core.tool.MQ.MQConsumerDelImg">
         <constructor-arg name="endpointName" value=""/>
@@ -98,12 +100,16 @@
         <constructor-arg name="exType" value="${rmq.delExType}"/>
         <constructor-arg name="host" value="${rmq.host}"/>
         <constructor-arg name="port" value="${rmq.port}"/>
+        <constructor-arg name="userName" value="${rmq.username}"/>
+        <constructor-arg name="password" value="${rmq.passwd}"/>
     </bean>
     <bean id="mqDelProducer" class="com.web.core.tool.MQ.MQDelProducer">
         <constructor-arg name="exName" value="${rmq.delExName}"/>
         <constructor-arg name="exType" value="${rmq.delExType}"/>
         <constructor-arg name="host" value="${rmq.host}"/>
         <constructor-arg name="port" value="${rmq.port}"/>
+        <constructor-arg name="userName" value="${rmq.username}"/>
+        <constructor-arg name="password" value="${rmq.passwd}"/>
     </bean>
 
     <!--topindex-->

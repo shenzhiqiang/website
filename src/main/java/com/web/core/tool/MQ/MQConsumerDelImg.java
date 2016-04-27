@@ -27,8 +27,8 @@ public class MQConsumerDelImg extends RMQ implements Runnable, Consumer {
     boolean ack = false; // message acknowledgments
 
 
-    public MQConsumerDelImg(String endpointName, String bindKey, String exName, String exType, String host, int port) throws IOException {
-        super(endpointName, bindKey, exName, exType, host, port);
+    public MQConsumerDelImg(String endpointName, String bindKey, String exName, String exType, String host, int port, String userName, String password) throws IOException {
+        super(endpointName, bindKey, exName, exType, host, port, userName, password);
         Thread consumerThread = new Thread(this);
         consumerThread.start();
     }

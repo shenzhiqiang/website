@@ -21,7 +21,7 @@ public abstract class RMQ{
     protected String exName;
     protected String exType;
 
-    public RMQ(String endpointName, String host, int port) throws IOException{
+    public RMQ(String endpointName, String host, int port, String userName, String password) throws IOException{
         this.endPointName = endpointName;
 
         //Create a connection factory
@@ -30,6 +30,9 @@ public abstract class RMQ{
         //hostname of your rabbitmq server
         factory.setHost(host);
         factory.setPort(port);
+
+        factory.setUsername(userName);
+        factory.setPassword(password);
 
         //getting a connection
         connection = factory.newConnection();
@@ -42,7 +45,7 @@ public abstract class RMQ{
         channel.queueDeclare(endpointName, false, false, false, null);
     }
 
-    public RMQ(String endpointName, String bindKey, String exName, String exType, String host, int port) throws IOException{
+    public RMQ(String endpointName, String bindKey, String exName, String exType, String host, int port, String userName, String password) throws IOException{
         this.endPointName = endpointName;
         this.exName = exName;
         this.exType = exType;
@@ -50,6 +53,10 @@ public abstract class RMQ{
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
         factory.setPort(port);
+
+        factory.setUsername(userName);
+        factory.setPassword(password);
+
         connection = factory.newConnection();
         channel = connection.createChannel();
 

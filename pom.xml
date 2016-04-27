@@ -261,6 +261,13 @@
       <version>2.8.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>sina.cloudstorage</groupId>
+      <artifactId>cloudstorage</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/scs-java-sdk-distribution-0.0.1-SNAPSHOT-bin.jar</systemPath>
+    </dependency>
 
   </dependencies>
 
